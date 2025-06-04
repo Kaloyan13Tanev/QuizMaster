@@ -133,9 +133,13 @@
     <ClCompile Include="TrueOrFalseQuestion.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Administrator.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="SingleChoiceQuestion.h" />
     <ClInclude Include="TrueOrFalseQuestion.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="Vector.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
