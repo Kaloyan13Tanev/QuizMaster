@@ -1,31 +1,24 @@
 #pragma once
+#include "String.h"
 
 class Question
 {
 private:
-	char* question;
+	String question;
 	unsigned points;
 
-	void setQuestion(char* question);
+	void setQuestion(const String& question);
 	void setPoints(unsigned points);
-
-	void copyFrom(const Question& other);
-	void moveFrom(Question&& other);
-	void free();
 
 public:
 	Question() = delete;
-	Question(const Question& other);
-	Question(Question&& other) noexcept;
-	Question& operator=(const Question& other);
-	Question& operator=(Question && other) noexcept;
 	virtual ~Question() = 0;
 
 	virtual Question* clone() const = 0;
 
-	Question(char* question, unsigned points);
+	Question(const String& question, unsigned points);
 
-	const char* getQuestion() const;
+	const String& getQuestion() const;
 	const unsigned getPoints() const; 
 
 	virtual unsigned answer() = 0;
