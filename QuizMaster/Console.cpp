@@ -3,7 +3,9 @@
 #include "TrueOrFalseQuestion.h"
 #include "SingleChoiceQuestion.h"
 #include "MultipleChoiceQuestion.h"
+#include "ShortAnswerQuestion.h"
 #include "MatchingPairsQuestion.h"
+#include <iostream>
 
 String Console::readLine()
 {
@@ -14,7 +16,12 @@ String Console::readLine()
 	{
 		res += temp;
 	}
-	return std::move(res);
+	return res;
+}
+
+void Console::printTrueFalseQuestion(const TrueOrFalseQuestion& tfQuestion)
+{
+	std::cout << tfQuestion.getQuestion();
 }
 
 bool Console::answerTrueFalseQuestion()
@@ -31,6 +38,15 @@ bool Console::answerTrueFalseQuestion()
 		return 0;
 }
 
+void Console::printSingleChoiceQuestion(const SingleChoiceQuestion& scQuestion)
+{
+	std::cout << scQuestion.getQuestion();
+	for (size_t i = 0; i < scQuestion.getAnswers().getSize(); i++)
+	{
+		std::cout << (char)('a' + i) << ". " << scQuestion.getAnswers()[i];
+	}
+}
+
 unsigned Console::answerSingleChoiceQuestion(const SingleChoiceQuestion& scQuestion)
 {
 	char answer;
@@ -45,6 +61,15 @@ unsigned Console::answerSingleChoiceQuestion(const SingleChoiceQuestion& scQuest
 	}
 
 	return answer - 'a' + 1;
+}
+
+void Console::printMultipleChoiceQuestion(const MultipleChoiceQuestion& mcQuestion)
+{
+	std::cout << mcQuestion.getQuestion();
+	for (size_t i = 0; i < mcQuestion.getAnswers().getSize(); i++)
+	{
+		std::cout << (char)('a' + i) << ". " << mcQuestion.getAnswers()[i];
+	}
 }
 
 Vector<unsigned> Console::answerMultipleChoiceQuestion(const MultipleChoiceQuestion& mcQuestion)
@@ -69,7 +94,12 @@ Vector<unsigned> Console::answerMultipleChoiceQuestion(const MultipleChoiceQuest
 			numAnswers.push_back(answersVec[i][0] - 'a' + 1);
 	}
 
-	return std::move(numAnswers);
+	return numAnswers;
+}
+
+void Console::printShortAnswerQuestion(const ShortAnswerQuestion& saQuestion)
+{
+	std::cout << saQuestion.getQuestion();
 }
 
 String Console::answerShortAnswerQuestion()
@@ -78,6 +108,21 @@ String Console::answerShortAnswerQuestion()
 	std::cout << "Your short answer: ";
 	answer = readLine();
 	return std::move(answer.makeLower());
+}
+
+void Console::printMatchingPairsQuestion(const MatchingPairsQuestion& mpQuestion)
+{
+	size_t firstColSize = mpQuestion.getFirstCol().getSize();
+	size_t secondColSize = mpQuestion.getSecondCol().getSize();
+	size_t length = std::max(firstColSize, secondColSize);
+	for (size_t i = 0; i < length; i++)
+	{
+		if (i < firstColSize)
+			std::cout << i << ". " << mpQuestion.getFirstCol()[i];
+		
+		if (i < secondColSize)
+			std::cout << '\t' << '\t' << (char)('a' + i) << ". " << mpQuestion.getSecondCol()[i];
+	}
 }
 
 Vector<unsigned> Console::answerMatchingPairsQuestion(const MatchingPairsQuestion& mpQuestion)
@@ -102,5 +147,5 @@ Vector<unsigned> Console::answerMatchingPairsQuestion(const MatchingPairsQuestio
 		answers.push_back(c - 'a');
 	}
 
-	return std::move(answers);
+	return answers;
 }

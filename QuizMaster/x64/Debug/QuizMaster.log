@@ -1,19 +1,2 @@
 ﻿  Console.cpp
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.h(14,15): error C2143: syntax error: missing ';' before '<'
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.h(14,15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.h(14,96): error C2238: unexpected token(s) preceding ';'
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(36,27): error C2039: 'AnswerMultipleChoiceQuestion': is not a member of 'Console'
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.h(7,7): message : see declaration of 'Console'
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(39,1): error C2143: syntax error: missing ';' before '}'
-  MultipleChoiceQuestion.cpp
-  Question.cpp
-  QuizMaster.cpp
-  SingleChoiceQuestion.cpp
-  String.cpp
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\String.cpp(237,1): error C2059: syntax error: '}'
-  StringHelpers.cpp
-  TrueOrFalseQuestion.cpp
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\TrueOrFalseQuestion.cpp(2,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  User.cpp
-  Generating Code...
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\MultipleChoiceQuestion.cpp(51): error C4716: 'MultipleChoiceQuestion::answer': must return a value
+  QuizMaster.vcxproj -> C:\Users\Kaloyan\source\repos\QuizMaster\x64\Debug\QuizMaster.exe

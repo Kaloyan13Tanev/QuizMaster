@@ -12,7 +12,7 @@ private:
 
 public:
 	Question() = delete;
-	virtual ~Question() = 0;
+	virtual ~Question() = default;
 
 	virtual Question* clone() const = 0;
 

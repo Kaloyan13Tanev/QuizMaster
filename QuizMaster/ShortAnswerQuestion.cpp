@@ -11,7 +11,7 @@ void ShortAnswerQuestion::setRightAnswer(const String& rightAnswer)
 
 ShortAnswerQuestion::ShortAnswerQuestion(const String& question, double points, const String& rightAnswer) : Question(question, points)
 {
-	this->setRightAnswer(rightAnswer);	
+	this->setRightAnswer(rightAnswer);
 }
 
 Question* ShortAnswerQuestion::clone() const
