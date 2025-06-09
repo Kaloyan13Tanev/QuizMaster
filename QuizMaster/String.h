@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-
+#include "Vector.hpp"
 class String
 {
 public:
@@ -51,6 +51,7 @@ public:
 	String& makeTrimmed();
 	// Start and end is inclusive [start, end]
 	String substr(size_t start, size_t end) const;
+	Vector<String> split(char separator) const;
 
 	void serialize(std::ostream& os) const;
 	void deserialize(std::istream& is);

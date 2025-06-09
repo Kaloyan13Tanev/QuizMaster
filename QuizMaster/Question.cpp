@@ -10,15 +10,15 @@ void Question::setQuestion(const String& question)
     this->question = question;
 }
 
-void Question::setPoints(unsigned points)
+void Question::setPoints(double points)
 {
-    if (points == 0)
-        throw std::invalid_argument("A question cannot be 0 points!");
+    if (points <= 0)
+        throw std::invalid_argument("A question cannot be 0 points or less!");
 
     this->points = points;
 }
 
-Question::Question(const String& question, unsigned points)
+Question::Question(const String& question, double points)
 {
     setPoints(points);
     setQuestion(question);
@@ -29,7 +29,7 @@ const String& Question::getQuestion() const
     return this->question;
 }
 
-const unsigned Question::getPoints() const
+const double Question::getPoints() const
 {
     return this->points;
 }

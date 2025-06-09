@@ -8,7 +8,9 @@ private:
 
 public:
 	TrueOrFalseQuestion() = delete;
-	TrueOrFalseQuestion(char* question, unsigned points, bool answer);
+	TrueOrFalseQuestion(const String& question, double points, bool answer);
 
-	unsigned answer() override;
+	Question* clone() const override;
+
+	double answer() const override;
 };

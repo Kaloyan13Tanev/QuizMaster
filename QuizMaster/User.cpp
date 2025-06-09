@@ -18,8 +18,17 @@ void User::setUsername(const String& username)
         throw std::invalid_argument("Username cannot be empty!");
 }
 
+void User::setPassword(const String& password)
+{
+    if (password.getLen() == 0)
+        throw std::invalid_argument("Password cannot be empty!");
+}
+
 User::User(String firstName, String lastName, String username)
 {
+    setUsername(username);
+    setFirstName(firstName);
+    setLastName(lastName);
 }
 
 const String& User::getFirstName() const

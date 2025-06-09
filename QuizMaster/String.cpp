@@ -231,6 +231,24 @@ String String::substr(size_t start, size_t end) const
 	return result;
 }
 
+Vector<String> String::split(char separator) const
+{
+	Vector<String> vector;
+	size_t i = 0;
+	while (i < this->getLen())
+	{
+		String word;
+		while (this[i] != separator)
+		{
+			word += this[i++];
+		}
+		i++;
+		vector.push_back(word);
+	}
+
+	return vector;
+}
+
 char& String::operator[](size_t indx)
 {
 	if (indx > size)

@@ -1,25 +1,21 @@
 #include "TrueOrFalseQuestion.h"
+#include "Console.h";
 #include <iostream>
 
-TrueOrFalseQuestion::TrueOrFalseQuestion(char* question, unsigned points, bool answer) : Question(question, points)
+TrueOrFalseQuestion::TrueOrFalseQuestion(const String& question, double points, bool answer) : Question(question, points)
 {
 	this->rightAnswer = answer;
 }
 
-unsigned TrueOrFalseQuestion::answer()
+Question* TrueOrFalseQuestion::clone() const
 {
-	bool givenAnswer;
-	char givenA;
-	std::cout << "Answer with 'T' or 'F': ";/////////////////////инпут въпрос
-	std::cin >> givenA;						/////////////////////инпут въпрос
-	if (givenA != 'T' && givenA != 'F')
-		throw std::invalid_argument("You should answer with 'T' or 'F'!");
-	
-	if (givenA == 'T')
-		givenAnswer = 1;
-	else
-		givenAnswer = 0;
+	return new TrueOrFalseQuestion(*this);
+}
 
-	if (givenAnswer == rightAnswer)
+double TrueOrFalseQuestion::answer() const
+{
+	if (Console::answerTrueFalseQuestion() == rightAnswer)
 		return getPoints();
+
+	return 0;
 }

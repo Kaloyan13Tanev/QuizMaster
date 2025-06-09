@@ -127,9 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="MatchingPairsQuestion.cpp" />
     <ClCompile Include="MathHelpers.cpp" />
+    <ClCompile Include="MultipleChoiceQuestion.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="QuizMaster.cpp" />
+    <ClCompile Include="ShortAnswerQuestion.cpp" />
     <ClCompile Include="SingleChoiceQuestion.cpp" />
     <ClCompile Include="String.cpp" />
     <ClCompile Include="StringHelpers.cpp" />
@@ -138,9 +142,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Administrator.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="MatchingPairsQuestion.h" />
     <ClInclude Include="MathHelpers.h" />
+    <ClInclude Include="MultipleChoiceQuestion.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Question.h" />
+    <ClInclude Include="Quiz.h" />
+    <ClInclude Include="ShortAnswerQuestion.h" />
     <ClInclude Include="SingleChoiceQuestion.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="StringHelpers.h" />

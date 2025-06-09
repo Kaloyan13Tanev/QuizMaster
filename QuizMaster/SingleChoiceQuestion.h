@@ -1,17 +1,25 @@
 #pragma once
 #include "Question.h"
+#include "Vector.hpp"
+#include "String.h"
 
 class SingleChoiceQuestion : public Question
 {
 private:
+	Vector<String> answers;
+	unsigned rightAnswer;
 
-
-	char answers[4][51]{};
-	char rightAnswer;
+	void setAnswers(const Vector<String>& answers);
+	void setRightAnswer(unsigned rightAnswer);
 
 public:
 	SingleChoiceQuestion() = delete;
-	SingleChoiceQuestion(char* question, unsigned points, char answers[4][51], char rightAnswer);
+	SingleChoiceQuestion(const String& question, double points, const Vector<String>& answers, unsigned rightAnswer);
 
-	unsigned answer() override;
+	Question* clone() const override;
+
+	const Vector<String>& getAnswers() const;
+	const unsigned getRightAnswer() const;
+
+	double answer() const override;
 };

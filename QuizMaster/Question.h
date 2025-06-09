@@ -5,10 +5,10 @@ class Question
 {
 private:
 	String question;
-	unsigned points;
+	double points;
 
 	void setQuestion(const String& question);
-	void setPoints(unsigned points);
+	void setPoints(double points);
 
 public:
 	Question() = delete;
@@ -16,10 +16,10 @@ public:
 
 	virtual Question* clone() const = 0;
 
-	Question(const String& question, unsigned points);
+	Question(const String& question, double points);
 
 	const String& getQuestion() const;
-	const unsigned getPoints() const; 
+	const double getPoints() const; 
 
-	virtual unsigned answer() = 0;
+	virtual double answer() const = 0;
 };
