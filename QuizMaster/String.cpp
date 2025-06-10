@@ -98,6 +98,13 @@ String::String(long long data)
 	: String(StringHelpers::toString(data).get())
 {}
 
+String::String(char data)
+{
+	char oneChar[2]{};
+	oneChar[0] = data;
+	setData(oneChar);
+}
+
 String::String(const char* data)
 {
 	setData(data);
@@ -238,9 +245,9 @@ Vector<String> String::split(char separator) const
 	while (i < this->getLen())
 	{
 		String word;
-		while (this[i] != separator)
+		while (i < this->getLen() && data[i] != separator)
 		{
-			word += this[i++];
+			word += data[i++];
 		}
 		i++;
 		vector.push_back(word);

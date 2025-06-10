@@ -26,6 +26,8 @@ const String& ShortAnswerQuestion::getRightAnswer() const
 
 double ShortAnswerQuestion::answer() const
 {
+	Console::printShortAnswerQuestion(*this);
+
 	String answer = Console::answerShortAnswerQuestion();
 	if (answer == this->getRightAnswer())
 		return this->getPoints();

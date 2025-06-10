@@ -24,11 +24,12 @@ void User::setPassword(const String& password)
         throw std::invalid_argument("Password cannot be empty!");
 }
 
-User::User(String firstName, String lastName, String username)
+User::User(String firstName, String lastName, String username, String password)
 {
     setUsername(username);
     setFirstName(firstName);
     setLastName(lastName);
+    setPassword(password);
 }
 
 const String& User::getFirstName() const

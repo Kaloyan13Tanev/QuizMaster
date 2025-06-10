@@ -28,6 +28,7 @@ public:
 	String(unsigned long data);
 	String(long long data);
 	String(unsigned long long data);
+	String(char data);
 	String(const char* data);
 	String(const String& other);
 	String(String&& other) noexcept;

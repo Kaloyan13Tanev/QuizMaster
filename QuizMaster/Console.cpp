@@ -10,6 +10,7 @@
 String Console::readLine()
 {
 	String res;
+	std::cin >> std::ws;
 
 	char temp;
 	while (std::cin.get(temp) && temp != '\n')
@@ -21,7 +22,7 @@ String Console::readLine()
 
 void Console::printTrueFalseQuestion(const TrueOrFalseQuestion& tfQuestion)
 {
-	std::cout << tfQuestion.getQuestion();
+	std::cout << tfQuestion.getQuestion() << std::endl;
 }
 
 bool Console::answerTrueFalseQuestion()
@@ -40,36 +41,38 @@ bool Console::answerTrueFalseQuestion()
 
 void Console::printSingleChoiceQuestion(const SingleChoiceQuestion& scQuestion)
 {
-	std::cout << scQuestion.getQuestion();
+	std::cout << scQuestion.getQuestion() << std::endl;
 	for (size_t i = 0; i < scQuestion.getAnswers().getSize(); i++)
 	{
-		std::cout << (char)('a' + i) << ". " << scQuestion.getAnswers()[i];
+		std::cout << (char)('a' + i) << '.' << scQuestion.getAnswers()[i] << ' ';
 	}
+	std::cout << std::endl;
 }
 
 unsigned Console::answerSingleChoiceQuestion(const SingleChoiceQuestion& scQuestion)
 {
-	char answer;
+	String answer;
 	std::cout << "Choose the letter of the right answer: ";
-	std::cin >> answer;
+	answer = Console::readLine();
 
-	if (answer < 'a' || answer > 'a' + scQuestion.getAnswers().getSize() - 1)
+	if (answer.getLen() > 1 || answer < 'a' || answer > 'a' + scQuestion.getAnswers().getSize() - 1)
 	{
 		String message = "the answer should be a letter between 'a' and " + (char)('a' + scQuestion.getAnswers().getSize());
 		message += "!";
 		throw std::invalid_argument(message.c_str());
 	}
 
-	return answer - 'a' + 1;
+	return answer[0] - 'a' + 1;
 }
 
 void Console::printMultipleChoiceQuestion(const MultipleChoiceQuestion& mcQuestion)
 {
-	std::cout << mcQuestion.getQuestion();
+	std::cout << mcQuestion.getQuestion() << std::endl;
 	for (size_t i = 0; i < mcQuestion.getAnswers().getSize(); i++)
 	{
-		std::cout << (char)('a' + i) << ". " << mcQuestion.getAnswers()[i];
+		std::cout << (char)('a' + i) << '.' << mcQuestion.getAnswers()[i] << ' ';
 	}
+	std::cout << std::endl;
 }
 
 Vector<unsigned> Console::answerMultipleChoiceQuestion(const MultipleChoiceQuestion& mcQuestion)
@@ -79,15 +82,21 @@ Vector<unsigned> Console::answerMultipleChoiceQuestion(const MultipleChoiceQuest
 	answers = readLine();
 	answers.makeLower();
 	Vector<String> answersVec = answers.split(' ');
-	if (answersVec.getSize() > mcQuestion.getAnswers().getSize()
-		|| answersVec.getSize() <= 1)
-		throw std::invalid_argument("There are missing or extra answers!");
-
-	Vector<unsigned> numAnswers;
 	for (size_t i = 0; i < answersVec.getSize(); i++)
 	{
-		if (answersVec[i].getLen() != 1 || answersVec[i] < 'a'
-			|| answersVec[i] > 'a' + mcQuestion.getAnswers().getSize() - 1)
+		std::cout << answersVec[i];
+	}
+	if (answersVec.getSize() > mcQuestion.getAnswers().getSize()
+		|| answersVec.getSize() <= 1)
+	{
+		throw std::invalid_argument("There are missing or extra answers!");
+	}
+
+	Vector<unsigned> numAnswers = Vector<unsigned>();
+	for (size_t i = 0; i < answersVec.getSize(); i++)
+	{
+		char maxAnswer = 'a' + mcQuestion.getAnswers().getSize() - 1;
+		if (answersVec[i].getLen() != 1 || answersVec[i] < 'a' || answersVec[i] > maxAnswer)
 			throw std::invalid_argument("You have given an answer which is either not a letter or is unavailable!");
 
 		if (!numAnswers.contains(answersVec[i][0] - 'a' + 1))
@@ -118,33 +127,34 @@ void Console::printMatchingPairsQuestion(const MatchingPairsQuestion& mpQuestion
 	for (size_t i = 0; i < length; i++)
 	{
 		if (i < firstColSize)
-			std::cout << i << ". " << mpQuestion.getFirstCol()[i];
-		
+			std::cout << i + 1 << ". " << mpQuestion.getFirstCol()[i];
+
 		if (i < secondColSize)
-			std::cout << '\t' << '\t' << (char)('a' + i) << ". " << mpQuestion.getSecondCol()[i];
+			std::cout << '\t' << '\t' << (char)('a' + i) << ". " << mpQuestion.getSecondCol()[i] << std::endl;
 	}
 }
 
 Vector<unsigned> Console::answerMatchingPairsQuestion(const MatchingPairsQuestion& mpQuestion)
 {
-	Vector<unsigned> answers;
+	Vector<unsigned> answers = Vector<unsigned>();
 	std::cout << "Choose the corresponding letter from the second column for each number from the first:" << std::endl;
-	
-	size_t max = mpQuestion.getFirstCol().getSize();
-	for (size_t i = 1; i <= max; i++)
+
+	size_t max = mpQuestion.getSecondCol().getSize();
+	char maxChar = 'a' + max;
+	for (size_t i = 1; i <= mpQuestion.getFirstCol().getSize(); i++)
 	{
-		std::cout << i << ". ";
-		
-		char c;
-		std::cin >> c;
-		c = StringHelpers::toLower(c);
-		
-		if (c < 'a' || c > 'a' + max - 1) 
+		std::cout << i << '.';
+
+		String c;
+		c = Console::readLine();
+		c.makeLower();
+
+		if (c.getLen() > 1 || c < 'a' || c > maxChar)
 		{
 			throw std::invalid_argument("There is no such row in the second column!");
 		}
 
-		answers.push_back(c - 'a');
+		answers.push_back(c[0] - 'a' + 1);
 	}
 
 	return answers;

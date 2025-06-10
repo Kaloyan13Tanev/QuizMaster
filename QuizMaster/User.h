@@ -2,10 +2,12 @@
 #include "String.h"
 #include "Vector.hpp"
 #include "Quiz.h"
+#include "Role.h"
 
 class User
 {
 private:
+	Role role;
 	String firstName;
 	String lastName;
 	String username;
@@ -19,7 +21,7 @@ private:
 
 public:
 	User() = delete;
-	User(String firstName, String lastName, String username);
+	User(String firstName, String lastName, String username, String password);
 
 	const String& getFirstName() const;
 	const String& getLastName() const;

@@ -7,5 +7,6 @@ private:
 	unsigned points;
 	unsigned level;
 
-
+public:
+	Player()
 };

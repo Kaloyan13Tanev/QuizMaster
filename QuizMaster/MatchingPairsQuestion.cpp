@@ -1,4 +1,5 @@
 #include "MatchingPairsQuestion.h"
+#include "Console.h"
 
 void MatchingPairsQuestion::setFirstCol(const Vector<String>& firstCol)
 {
@@ -28,10 +29,20 @@ void MatchingPairsQuestion::setSecondCol(const Vector<String>& secondCol)
 	}
 }
 
-MatchingPairsQuestion::MatchingPairsQuestion(const String& question, double points, const Vector<String>& firstCol, const Vector<String>& secondCol) : Question(question, points)
+void MatchingPairsQuestion::setRightConnections(const Vector<unsigned>& rightConnections)
+{
+	if (rightConnections.getSize() != this->getFirstCol().getSize())
+		throw std::invalid_argument("The number of connections is different from what it should be!");
+
+	for (size_t i = 0; i < this->getFirstCol().getSize(); i++)
+		this->rightConnections.push_back(rightConnections[i]);
+}
+
+MatchingPairsQuestion::MatchingPairsQuestion(const String& question, double points, const Vector<String>& firstCol, const Vector<String>& secondCol, const Vector<unsigned>& rightAnswers) : Question(question, points)
 {
 	setFirstCol(firstCol);
 	setSecondCol(secondCol);
+	setRightConnections(rightAnswers);
 }
 
 Question* MatchingPairsQuestion::clone() const
@@ -49,7 +60,20 @@ const Vector<String>& MatchingPairsQuestion::getSecondCol() const
 	return this->secondCol;
 }
 
+const Vector<unsigned>& MatchingPairsQuestion::getRightConnections() const
+{
+	return this->rightConnections;
+}
+
 double MatchingPairsQuestion::answer() const
 {
-	return 0.0;
+	Console::printMatchingPairsQuestion(*this);
+	Vector<unsigned> givenAnswers = Console::answerMatchingPairsQuestion(*this);
+	for (size_t i = 0; i < this->getRightConnections().getSize(); i++)
+	{
+		if (this->getRightConnections()[i] != givenAnswers[i])
+			return 0;
+	}
+
+	return this->getPoints();
 }

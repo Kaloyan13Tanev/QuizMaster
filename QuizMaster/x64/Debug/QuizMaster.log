@@ -1,2 +1,4 @@
 ﻿  Console.cpp
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(98,63): warning C4267: 'initializing': conversion from 'size_t' to 'char', possible loss of data
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(143,26): warning C4267: 'initializing': conversion from 'size_t' to 'char', possible loss of data
   QuizMaster.vcxproj -> C:\Users\Kaloyan\source\repos\QuizMaster\x64\Debug\QuizMaster.exe

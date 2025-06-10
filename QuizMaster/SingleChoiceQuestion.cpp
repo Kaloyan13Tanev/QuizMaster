@@ -21,6 +21,8 @@ const unsigned SingleChoiceQuestion::getRightAnswer() const
 
 double SingleChoiceQuestion::answer() const
 {
+	Console::printSingleChoiceQuestion(*this);
+
 	if (Console::answerSingleChoiceQuestion(*this) == rightAnswer)
 		return getPoints();
 

@@ -14,6 +14,8 @@ Question* TrueOrFalseQuestion::clone() const
 
 double TrueOrFalseQuestion::answer() const
 {
+	Console::printTrueFalseQuestion(*this);
+
 	if (Console::answerTrueFalseQuestion() == rightAnswer)
 		return getPoints();
 

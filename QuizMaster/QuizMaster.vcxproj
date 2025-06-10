@@ -149,6 +149,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="Quiz.h" />
+    <ClInclude Include="Role.h" />
     <ClInclude Include="ShortAnswerQuestion.h" />
     <ClInclude Include="SingleChoiceQuestion.h" />
     <ClInclude Include="String.h" />

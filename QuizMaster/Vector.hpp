@@ -197,7 +197,7 @@ template<typename T>
 void Vector<T>::insert(size_t indx, const T& rhs)
 {
 	// if want to all for insert at end do > instead of >=
-	if (indx >= size)
+	if (indx > size)
 	{
 		throw std::out_of_range("Given index is out of the bounds of the vector");
 	}

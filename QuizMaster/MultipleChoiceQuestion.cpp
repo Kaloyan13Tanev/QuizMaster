@@ -47,6 +47,8 @@ const Vector<unsigned> MultipleChoiceQuestion::getRightAnswers() const
 
 double MultipleChoiceQuestion::answer() const
 {
+	Console::printMultipleChoiceQuestion(*this);
+
 	unsigned points = 0;
 	Vector<unsigned> givenAnswers = Console::answerMultipleChoiceQuestion(*this);
 	double pointsPerRight = (double)this->getPoints() / this->getRightAnswers().getSize();
@@ -56,7 +58,7 @@ double MultipleChoiceQuestion::answer() const
 			points += pointsPerRight;
 	}
 
-	if (points = this->getPoints() && givenAnswers.getSize() > this->getRightAnswers().getSize())
+	if (points == this->getPoints() && givenAnswers.getSize() > this->getRightAnswers().getSize())
 		points -= pointsPerRight * (this->getRightAnswers().getSize() - givenAnswers.getSize());
 
 	if (points < 0)
