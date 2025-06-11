@@ -15,6 +15,12 @@ public:
 
 	static String readLine();
 
+	static void printCommandsNoLogin();
+	static void printCommandsAdmin();
+	static void printCommandsPlayer();
+
+	static void Start();
+
 	static void printTrueFalseQuestion(const TrueOrFalseQuestion& tfQuestion);
 	static bool answerTrueFalseQuestion();
 

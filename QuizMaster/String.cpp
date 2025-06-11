@@ -256,6 +256,39 @@ Vector<String> String::split(char separator) const
 	return vector;
 }
 
+bool String::isNumber() const
+{
+	if (this->data[0] == '-' || StringHelpers::isDigit(this->data[0]))
+	{
+		for (size_t i = 1; i < this->getLen(); i++)
+		{
+			if(!StringHelpers::isDigit(this->data[i]))
+				return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool String::isUnsignedNumber() const
+{
+	return isNumber() && StringHelpers::isDigit(this->data[0]);
+}
+
+unsigned String::toUnsigned() const
+{
+	if (!isUnsignedNumber)
+		throw std::invalid_argument("This is not a number bigger than or equal to zero!");
+
+	unsigned number = 0;
+	for (size_t i = 0; i < this->getLen(); i++)
+	{
+		number += pow(10, this->getLen() - 1 - i) * (this->data[i] - '0');
+	}
+
+	return number;
+}
+
 char& String::operator[](size_t indx)
 {
 	if (indx > size)

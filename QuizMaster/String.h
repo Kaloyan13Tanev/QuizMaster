@@ -53,6 +53,9 @@ public:
 	// Start and end is inclusive [start, end]
 	String substr(size_t start, size_t end) const;
 	Vector<String> split(char separator) const;
+	bool isNumber() const;
+	bool isUnsignedNumber() const;
+	unsigned toUnsigned() const;
 
 	void serialize(std::ostream& os) const;
 	void deserialize(std::istream& is);

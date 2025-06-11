@@ -20,16 +20,17 @@ void User::setUsername(const String& username)
 
 void User::setPassword(const String& password)
 {
-    if (password.getLen() == 0)
-        throw std::invalid_argument("Password cannot be empty!");
+    if (password.getLen() < 8)
+        throw std::invalid_argument("Password should be at least 8 characters long!");
 }
 
-User::User(String firstName, String lastName, String username, String password)
+User::User(const String& firstName, const String& lastName, const String& username, const String& password, Role role)
 {
     setUsername(username);
     setFirstName(firstName);
     setLastName(lastName);
     setPassword(password);
+    this->role = role;
 }
 
 const String& User::getFirstName() const
@@ -47,3 +48,29 @@ const String& User::getUsername() const
     return username;
 }
 
+const Role User::getRole() const
+{
+    return this->role;
+}
+
+void User::write(std::ostream& os) const
+{
+    os << "@" << this->username << " " << this->firstName << " " << this->lastName;
+}
+
+void User::read(std::istream& is)
+{
+    is >> this->username >> this->firstName >> this->lastName;
+}
+
+std::ostream& operator<<(std::ostream& os, const User& user)
+{
+    user.write(os);
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, User& user)
+{
+    user.read(is);
+    return is;
+}

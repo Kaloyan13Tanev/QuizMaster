@@ -1,4 +1,40 @@
-﻿  Console.cpp
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(98,63): warning C4267: 'initializing': conversion from 'size_t' to 'char', possible loss of data
-C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(143,26): warning C4267: 'initializing': conversion from 'size_t' to 'char', possible loss of data
-  QuizMaster.vcxproj -> C:\Users\Kaloyan\source\repos\QuizMaster\x64\Debug\QuizMaster.exe
+﻿  Administrator.cpp
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(5,1): error C2504: 'User': base class undefined
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,6): error C2143: syntax error: missing ';' before '*'
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,6): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,30): error C2238: unexpected token(s) preceding ';'
+  Console.cpp
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(5,1): error C2504: 'User': base class undefined
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,6): error C2143: syntax error: missing ';' before '*'
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,6): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,30): error C2238: unexpected token(s) preceding ';'
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(117,24): error C2660: 'System::signup': function does not take 0 arguments
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\System.h(20,7): message : see declaration of 'System::signup'
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(117,24): message : while trying to match the argument list '()'
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(156,60): warning C4267: 'initializing': conversion from 'size_t' to 'char', possible loss of data
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(197,63): warning C4267: 'initializing': conversion from 'size_t' to 'char', possible loss of data
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Console.cpp(242,26): warning C4267: 'initializing': conversion from 'size_t' to 'char', possible loss of data
+  Player.cpp
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Quiz.h(14,9): error C2065: 'Player': undeclared identifier
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Quiz.h(14,2): error C2923: 'Vector': 'Player' is not a valid template type argument for parameter 'T'
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Quiz.h(14,9): message : see declaration of 'Player'
+  QuizMaster.cpp
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\QuizMaster.cpp(8,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\QuizMaster.cpp(51,22): warning C4244: '+=': conversion from 'double' to 'unsigned int', possible loss of data
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\QuizMaster.cpp(53,22): warning C4244: '+=': conversion from 'double' to 'unsigned int', possible loss of data
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\QuizMaster.cpp(55,22): warning C4244: '+=': conversion from 'double' to 'unsigned int', possible loss of data
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\QuizMaster.cpp(57,22): warning C4244: '+=': conversion from 'double' to 'unsigned int', possible loss of data
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\QuizMaster.cpp(59,22): warning C4244: '+=': conversion from 'double' to 'unsigned int', possible loss of data
+  System.cpp
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(5,1): error C2504: 'User': base class undefined
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,6): error C2143: syntax error: missing ';' before '*'
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,6): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,30): error C2238: unexpected token(s) preceding ';'
+  TrueOrFalseQuestion.cpp
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\TrueOrFalseQuestion.cpp(2,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  User.cpp
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(5,1): error C2504: 'User': base class undefined
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,6): error C2143: syntax error: missing ';' before '*'
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,6): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Player.h(14,30): error C2238: unexpected token(s) preceding ';'
+  Generating Code...

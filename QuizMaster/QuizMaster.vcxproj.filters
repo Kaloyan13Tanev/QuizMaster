@@ -13,18 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\QuestionClasses">
+      <UniqueIdentifier>{c9b64244-e13b-4665-9636-127724dbc4c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UserClasses">
+      <UniqueIdentifier>{1ed6ba6b-9783-4c6c-a7d8-c18cb2bede8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UserClasses">
+      <UniqueIdentifier>{f8e74a27-99a9-4e22-8b1b-a3f52afe9096}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\QuestionClasses">
+      <UniqueIdentifier>{74f8da3a-5692-4640-ba12-92c4c542798b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="QuizMaster.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Question.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TrueOrFalseQuestion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SingleChoiceQuestion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="String.cpp">
@@ -36,41 +39,44 @@
     <ClCompile Include="MathHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="User.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MultipleChoiceQuestion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShortAnswerQuestion.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="User.cpp">
+      <Filter>Source Files\UserClasses</Filter>
     </ClCompile>
     <ClCompile Include="MatchingPairsQuestion.cpp">
+      <Filter>Source Files\QuestionClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="MultipleChoiceQuestion.cpp">
+      <Filter>Source Files\QuestionClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Question.cpp">
+      <Filter>Source Files\QuestionClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="ShortAnswerQuestion.cpp">
+      <Filter>Source Files\QuestionClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleChoiceQuestion.cpp">
+      <Filter>Source Files\QuestionClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="TrueOrFalseQuestion.cpp">
+      <Filter>Source Files\QuestionClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Administrator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Quiz.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Question.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TrueOrFalseQuestion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SingleChoiceQuestion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="User.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Administrator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Vector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -86,19 +92,43 @@
     <ClInclude Include="Quiz.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MultipleChoiceQuestion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShortAnswerQuestion.h">
+    <ClInclude Include="Role.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MatchingPairsQuestion.h">
+      <Filter>Header Files\QuestionClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="MultipleChoiceQuestion.h">
+      <Filter>Header Files\QuestionClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Question.h">
+      <Filter>Header Files\QuestionClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="ShortAnswerQuestion.h">
+      <Filter>Header Files\QuestionClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleChoiceQuestion.h">
+      <Filter>Header Files\QuestionClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="TrueOrFalseQuestion.h">
+      <Filter>Header Files\QuestionClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Administrator.h">
+      <Filter>Header Files\UserClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\UserClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <Filter>Header Files\UserClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Role.h">
+    <ClInclude Include="QuizMaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

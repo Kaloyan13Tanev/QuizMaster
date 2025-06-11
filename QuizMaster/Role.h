@@ -1,6 +1,6 @@
 #pragma once
 
-enum Role {
+enum class Role {
 	Admin,
 	Player
 };
