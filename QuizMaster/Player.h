@@ -13,7 +13,7 @@ private:
 	void setLevel(const String& level);
 
 public:
-	Player() = delete;
+	Player();
 	Player(const String& firstName, const String& lastName, const String& username, const String& password);
 
 	User* clone() const override;
@@ -23,4 +23,7 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Player& player);
 	friend std::istream& operator>>(std::istream& os, Player& player);
+
+	void serialize(std::ostream& os) const override;
+	void deserialize(std::istream& is) override;
 };

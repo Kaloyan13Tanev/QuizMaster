@@ -29,11 +29,17 @@ void Player::setLevel(const String& level)
 	setLevel(level.toUnsigned());
 }
 
+Player::Player() : User()
+{
+	level = 0;
+	points = 0;
+}
+
 Player::Player(const String& firstName, const String& lastName, const String& username, const String& password) :
 	User(firstName, lastName, username, password, Role::Player)
 {
-	points = 0;
 	level = 0;
+	points = 0;
 }
 
 User* Player::clone() const
@@ -56,6 +62,24 @@ void Player::read(std::istream& is)
 	String points;
 	is >> points;
 	setPoints(points);
+}
+
+void Player::serialize(std::ostream& os) const
+{
+	User::serialize(os);
+	os.write((const char*)level, sizeof(level));
+	os.write((const char*)points, sizeof(points));
+}
+
+void Player::deserialize(std::istream& is)
+{
+	User::deserialize(is);
+	unsigned level = 0;
+	is.read((char*)level, sizeof(level));
+	this->setLevel(level);
+	unsigned points = 0;
+	is.read((char*)points, sizeof(points));
+	this->setPoints(points);
 }
 
 std::ostream& operator<<(std::ostream& os, const Player& player)

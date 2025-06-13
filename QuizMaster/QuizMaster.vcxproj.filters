@@ -63,17 +63,17 @@
     <ClCompile Include="TrueOrFalseQuestion.cpp">
       <Filter>Source Files\QuestionClasses</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Administrator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Quiz.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Administrator.cpp">
+      <Filter>Source Files\UserClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\UserClasses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="QuizMaster.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionType.h">
+      <Filter>Header Files\QuestionClasses</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

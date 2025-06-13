@@ -1,43 +1,11 @@
 #include "Quiz.h"
-
-void Quiz::free()
-{
-	for (size_t i = 0; i < questions.getSize(); i++)
-	{
-		delete questions[i];
-		questions[i] = nullptr;
-	}
-	this->ID = "";
-	this->title = "";
-	this->timesPlayed = 0;
-	this->questions = 0;
-	this->likes = 0;
-}
-
-void Quiz::copyFrom(const Quiz& other)
-{
-	this->ID = other.ID;
-	this->title = other.title;
-	this->questions = Vector<Question*>(other.questions.getCapacity());
-	for (size_t i = 0; i < other.questions.getSize(); i++)
-	{
-		this->questions.push_back(other.questions[i]->clone());
-	}
-	this->timesPlayed = other.timesPlayed;
-	this->likes = other.likes;
-}
-
-void Quiz::moveFrom(Quiz&& other)
-{
-	this->ID = other.ID;
-	this->title = other.title;
-	this->timesPlayed = other.timesPlayed;
-	this->likes = other.likes;
-	this->questions = other.questions;
-
-	for (size_t i = 0; i < other.questions.getSize(); i++)
-		other.questions[i] = nullptr;
-}
+#include "TrueOrFalseQuestion.h"
+#include "SingleChoiceQuestion.h"
+#include "MultipleChoiceQuestion.h"
+#include "ShortAnswerQuestion.h"
+#include "MatchingPairsQuestion.h"
+#include <cstdlib> 
+#include <ctime>
 
 void Quiz::setID(const String& ID)
 {
@@ -66,39 +34,9 @@ void Quiz::setQuestions(const Vector<Question*> questions)
 		this->questions.push_back(questions[i]->clone());
 }
 
-Quiz::Quiz(const Quiz& other)
+Quiz::Quiz(std::istream& is)
 {
-	copyFrom(other);
-}
-
-Quiz::Quiz(Quiz&& other)
-{
-	moveFrom(std::move(other));
-}
-
-Quiz& Quiz::operator=(const Quiz& other)
-{
-	if (this != &other)
-	{
-		free();
-		copyFrom(other);
-	}
-	return *this;
-}
-
-Quiz& Quiz::operator=(Quiz&& other)
-{
-	if (this != &other)
-	{
-		free();
-		moveFrom(std::move(other));
-	}
-	return *this;
-}
-
-Quiz::~Quiz()
-{
-	free();
+	deserialize(is);
 }
 
 Quiz::Quiz(const String& ID, const String& title, const String& creatorUsername, const Vector<Question*> question)
@@ -150,7 +88,168 @@ const unsigned Quiz::getTimesPlayed() const
 	return this->timesPlayed;
 }
 
-const Vector<Player>& Quiz::getLikes() const
+const Vector<String>& Quiz::getLikes() const
 {
 	return this->getLikes();
+}
+
+void Quiz::addLike(const String& username)
+{
+	if (likes.contains(username))
+		throw std::invalid_argument("Quiz already liked!");
+
+	likes.push_back(username);
+}
+
+void Quiz::removeLike(const String& username)
+{
+	if (!likes.contains(username))
+		throw std::invalid_argument("Quiz not liked!");
+
+	likes.remove(username);
+}
+
+void Quiz::playQuiz()
+{
+	double accPoints = 0;
+	double maxPoints = 0;
+	for (size_t i = 0; i < questions.getSize(); i++)
+	{
+		accPoints += questions[i]->answer();
+		maxPoints += questions[i]->getPoints();
+	}
+	Console::printQuizResult(accPoints, maxPoints);
+}
+
+void Quiz::playQuizShuffled()
+{
+	size_t size = questions.getSize();
+
+	std::srand(static_cast<unsigned>(std::time(nullptr)));
+
+	Vector<size_t> numbers(size);
+	for (size_t i = 0; i < size; ++i)
+		numbers[i] = i;
+
+	for (size_t i = size - 1; i > 0; --i)
+	{
+		size_t j = rand() % (i + 1);  
+		std::swap(numbers[i], numbers[j]);
+	}
+
+	double accPoints = 0, maxPoints = 0;
+	for (size_t i = 0; i < size; i++)
+	{
+		accPoints += questions[numbers[i]]->answer();
+		maxPoints += questions[numbers[i]]->getPoints();
+	}
+
+	Console::printQuizResult(accPoints, maxPoints);
+}
+
+void Quiz::playQuizTest()
+{
+	for (size_t i = 0; i < questions.getSize(); i++)
+	{
+		questions[i]->answer();
+		Console::printRightAnswers(questions[i]);
+	}
+}
+
+void Quiz::playQuizTestShuffled()
+{
+	size_t size = questions.getSize();
+
+	std::srand(static_cast<unsigned>(std::time(nullptr)));
+
+	Vector<size_t> numbers(size);
+	for (size_t i = 0; i < size; ++i)
+		numbers[i] = i;
+
+	for (size_t i = size - 1; i > 0; --i)
+	{
+		size_t j = rand() % (i + 1);
+		std::swap(numbers[i], numbers[j]);
+	}
+
+	for (size_t i = 0; i < size; i++)
+	{
+		questions[numbers[i]]->answer();
+		Console::printRightAnswers(questions[numbers[i]]);
+	}
+}
+
+void Quiz::serialize(std::ostream& os) const
+{
+	ID.serialize(os);
+	title.serialize(os);
+	creatorUsername.serialize(os);
+	size_t size = this->questions.getSize();
+	os.write((const char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		this->questions[i]->clone()->serialize(os);
+	}
+	os.write((const char*)&timesPlayed, sizeof(timesPlayed));
+	size = this->likes.getSize();
+	os.write((const char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		this->likes[i].serialize(os);
+	}
+}
+
+void Quiz::deserialize(std::istream& is)
+{
+	ID.deserialize(is);
+	title.deserialize(is);
+	creatorUsername.deserialize(is);
+	size_t size;
+	is.read((char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		QuestionType questionType;
+		is.read((char*)&questionType, sizeof(size));
+
+		if (questionType == QuestionType::TrueOrFalse)
+		{
+			TrueOrFalseQuestion tf = TrueOrFalseQuestion(is);
+			this->questions.push_back(tf.clone());
+		}
+		else if (questionType == QuestionType::SingleChoice)
+		{
+			SingleChoiceQuestion sc = SingleChoiceQuestion(is);
+			this->questions.push_back(sc.clone());
+		}
+		else if (questionType == QuestionType::MultipleChoice)
+		{
+			MultipleChoiceQuestion mc = MultipleChoiceQuestion(is);
+			this->questions.push_back(mc.clone());
+		}
+		else if (questionType == QuestionType::ShortAnswer)
+		{
+			ShortAnswerQuestion sa = ShortAnswerQuestion(is);
+			this->questions.push_back(sa.clone());
+		}
+		else if (questionType == QuestionType::MatchingPairs)
+		{
+			MatchingPairsQuestion mp = MatchingPairsQuestion(is);
+			this->questions.push_back(mp.clone());
+		}
+	}
+
+	is.read((char*)&this->timesPlayed, sizeof(this->timesPlayed));
+
+	is.read((char*)&size, sizeof(size));
+	this->likes = Vector<String>(size);
+	for (size_t i = 0; i < size; i++)
+	{
+		this->likes[i].deserialize(is);
+	}
+}
+
+void operator<<(std::ostream& os, const Quiz& quiz)
+{
+	os << quiz.title << " " << quiz.ID << "\nby " << quiz.creatorUsername
+		<< " " << quiz.timesPlayed << " times played " << quiz.likes.getSize() << " likes";
 }

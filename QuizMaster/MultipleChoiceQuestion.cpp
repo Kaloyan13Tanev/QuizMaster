@@ -23,8 +23,13 @@ void MultipleChoiceQuestion::setRightAnswers(const Vector<unsigned>& rightAnswer
 	}
 }
 
-MultipleChoiceQuestion::MultipleChoiceQuestion(const String& question, double points, 
-	const Vector<String>& answers, const Vector<unsigned>& rightAnswers) : Question(question, points)
+MultipleChoiceQuestion::MultipleChoiceQuestion(std::istream& is) : Question(is)
+{
+	this->deserialize(is);
+}
+
+MultipleChoiceQuestion::MultipleChoiceQuestion(const String& question, double points, const Vector<String>& answers,
+	const Vector<unsigned>& rightAnswers) : Question(question, points, QuestionType::MultipleChoice)
 {
 	setAnswers(answers);
 	setRightAnswers(rightAnswers);
@@ -65,4 +70,47 @@ double MultipleChoiceQuestion::answer() const
 		return 0;
 
 	return points;
+}
+
+const String& MultipleChoiceQuestion::rightAnswerToString() const
+{
+	String answer = "Right answers: ";
+	for (size_t i = 0; i < rightAnswers.getSize(); i++)
+	{
+		answer += rightAnswers[i];
+		if (i != rightAnswers.getSize() - 1)
+			answer += ", ";
+	}
+}
+
+void MultipleChoiceQuestion::serialize(std::ostream& os)
+{
+	Question::serialize(os);
+	size_t size;
+	os.write((const char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		this->answers[i].serialize(os);
+	}
+	os.write((const char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		os.write((const char*)&this->rightAnswers[i], sizeof(this->rightAnswers[i]));
+	}
+}
+
+void MultipleChoiceQuestion::deserialize(std::istream& is)
+{
+	Question::deserialize(is);
+	size_t size;
+	is.read((char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		this->answers[i].deserialize(is);
+	}
+	is.read((char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		is.read((char*)&this->rightAnswers[i], sizeof(this->rightAnswers[i]));
+	}
 }

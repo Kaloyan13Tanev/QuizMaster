@@ -38,7 +38,13 @@ void MatchingPairsQuestion::setRightConnections(const Vector<unsigned>& rightCon
 		this->rightConnections.push_back(rightConnections[i]);
 }
 
-MatchingPairsQuestion::MatchingPairsQuestion(const String& question, double points, const Vector<String>& firstCol, const Vector<String>& secondCol, const Vector<unsigned>& rightAnswers) : Question(question, points)
+MatchingPairsQuestion::MatchingPairsQuestion(std::istream& is) : Question(is)
+{
+	this->deserialize(is);
+}
+
+MatchingPairsQuestion::MatchingPairsQuestion(const String& question, double points, const Vector<String>& firstCol,
+	const Vector<String>& secondCol, const Vector<unsigned>& rightAnswers) : Question(question, points, QuestionType::MatchingPairs)
 {
 	setFirstCol(firstCol);
 	setSecondCol(secondCol);
@@ -76,4 +82,59 @@ double MatchingPairsQuestion::answer() const
 	}
 
 	return this->getPoints();
+}
+
+const String& MatchingPairsQuestion::rightAnswerToString() const
+{
+	String string = "Right answers: ";
+	for (size_t i = 1; i <= firstCol.getSize(); i++)
+	{
+		string += i;
+		string += '.';
+		string += 'a' + rightConnections[i - 1] - 1;
+		if (i != firstCol.getSize())
+			string += ', ';
+	}
+}
+
+void MatchingPairsQuestion::serialize(std::ostream& os)
+{
+	Question::serialize(os);
+	size_t size;
+	os.write((const char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		this->firstCol[i].serialize(os);
+	}
+	os.write((const char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		this->secondCol[i].serialize(os);
+	}
+	os.write((const char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		os.write((const char*)&this->rightConnections[i], sizeof(this->rightConnections[i]));
+	}
+}
+
+void MatchingPairsQuestion::deserialize(std::istream& is)
+{
+	Question::deserialize(is);
+	size_t size;
+	is.read((char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		this->firstCol[i].deserialize(is);
+	}
+	is.read((char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		this->secondCol[i].deserialize(is);
+	}
+	is.read((char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		is.read((char*)&this->rightConnections[i], sizeof(this->rightConnections[i]));
+	}
 }

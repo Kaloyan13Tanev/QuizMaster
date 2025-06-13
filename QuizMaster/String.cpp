@@ -277,7 +277,7 @@ bool String::isUnsignedNumber() const
 
 unsigned String::toUnsigned() const
 {
-	if (!isUnsignedNumber)
+	if (!isUnsignedNumber())
 		throw std::invalid_argument("This is not a number bigger than or equal to zero!");
 
 	unsigned number = 0;

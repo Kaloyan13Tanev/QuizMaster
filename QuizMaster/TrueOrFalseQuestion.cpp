@@ -2,7 +2,12 @@
 #include "Console.h";
 #include <iostream>
 
-TrueOrFalseQuestion::TrueOrFalseQuestion(const String& question, double points, bool answer) : Question(question, points)
+TrueOrFalseQuestion::TrueOrFalseQuestion(std::istream& is) : Question(is)
+{
+	this->deserialize(is);
+}
+
+TrueOrFalseQuestion::TrueOrFalseQuestion(const String& question, double points, bool answer) : Question(question, points, QuestionType::TrueOrFalse)
 {
 	this->rightAnswer = answer;
 }
@@ -20,4 +25,26 @@ double TrueOrFalseQuestion::answer() const
 		return getPoints();
 
 	return 0;
+}
+
+const String& TrueOrFalseQuestion::rightAnswerToString() const
+{
+	if (rightAnswer == true)
+		return "Right answer: True";
+	
+	return "Right answer: False";
+}
+
+void TrueOrFalseQuestion::serialize(std::ostream& os)
+{
+	Question::serialize(os);
+	os.write((const char*)&rightAnswer, sizeof(rightAnswer));
+}
+
+void TrueOrFalseQuestion::deserialize(std::istream& is)
+{
+	Question::deserialize(is);
+	bool rightAnswer;
+	is.read((char*)&rightAnswer, sizeof(rightAnswer));
+	this->rightAnswer = rightAnswer;
 }

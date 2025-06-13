@@ -35,4 +35,7 @@ public:
 
 	static void printMatchingPairsQuestion(const MatchingPairsQuestion& mpQuestion);
 	static Vector<unsigned> answerMatchingPairsQuestion(const MatchingPairsQuestion& mpQuestion);
+
+	static void printQuizResult(double accPoints, double maxPoints);
+	static void printRightAnswers(const Question* question);
 };

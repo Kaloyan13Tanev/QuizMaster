@@ -152,6 +152,7 @@
     <ClInclude Include="MultipleChoiceQuestion.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Question.h" />
+    <ClInclude Include="QuestionType.h" />
     <ClInclude Include="Quiz.h" />
     <ClInclude Include="QuizMaster.h" />
     <ClInclude Include="Role.h" />

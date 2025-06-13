@@ -14,7 +14,7 @@ private:
 	void setRightConnections(const Vector<unsigned>& rightConnections);
 
 public:
-	MatchingPairsQuestion() = delete;
+	MatchingPairsQuestion(std::istream& is);
 	MatchingPairsQuestion(const String& question, double points, const Vector<String>& firstCol, const Vector<String>& secondCol, const Vector<unsigned>& rightAnswers);
 
 	Question* clone() const override;
@@ -24,4 +24,8 @@ public:
 	const Vector<unsigned>& getRightConnections() const;
 
 	double answer() const override;
+	const String& rightAnswerToString() const override;
+
+	void serialize(std::ostream& os);
+	void deserialize(std::istream& is);
 };

@@ -13,7 +13,7 @@ private:
 	void setRightAnswers(const Vector<unsigned>& rightAnswers);
 
 public:
-	MultipleChoiceQuestion() = delete;
+	MultipleChoiceQuestion(std::istream& is);
 	MultipleChoiceQuestion(const String& question, double points,
 		const Vector<String>& answers, const Vector<unsigned>& rightAnswers);
 
@@ -23,4 +23,8 @@ public:
 	const Vector<unsigned> getRightAnswers() const;
 
 	double answer() const override;
+	const String& rightAnswerToString() const override;
+
+	void serialize(std::ostream& os);
+	void deserialize(std::istream& is);
 };

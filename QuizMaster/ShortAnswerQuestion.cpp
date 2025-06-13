@@ -9,7 +9,13 @@ void ShortAnswerQuestion::setRightAnswer(const String& rightAnswer)
 	this->rightAnswer = rightAnswer;
 }
 
-ShortAnswerQuestion::ShortAnswerQuestion(const String& question, double points, const String& rightAnswer) : Question(question, points)
+ShortAnswerQuestion::ShortAnswerQuestion(std::istream& is) : Question(is)
+{
+	this->deserialize(is);
+}
+
+ShortAnswerQuestion::ShortAnswerQuestion(const String& question, double points, const String& rightAnswer)
+	: Question(question, points, QuestionType::ShortAnswer)
 {
 	this->setRightAnswer(rightAnswer);
 }
@@ -33,4 +39,21 @@ double ShortAnswerQuestion::answer() const
 		return this->getPoints();
 
 	return 0;
+}
+
+const String& ShortAnswerQuestion::rightAnswerToString() const
+{
+	return "Right answer: " + rightAnswer;
+}
+
+void ShortAnswerQuestion::serialize(std::ostream& os)
+{
+	Question::serialize(os);
+	rightAnswer.serialize(os);
+}
+
+void ShortAnswerQuestion::deserialize(std::istream& is)
+{
+	Question::deserialize(is);
+	rightAnswer.deserialize(is);
 }
