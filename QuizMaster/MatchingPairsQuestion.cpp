@@ -95,6 +95,7 @@ const String& MatchingPairsQuestion::rightAnswerToString() const
 		if (i != firstCol.getSize())
 			string += ', ';
 	}
+	return string;
 }
 
 void MatchingPairsQuestion::serialize(std::ostream& os)

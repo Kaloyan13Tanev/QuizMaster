@@ -17,7 +17,18 @@ private:
 	void setTitle(const String& title);
 	void setQuestions(const Vector<Question*> questions);
 
+	void free();
+	void copyFrom(const Quiz& other);
+	void moveFrom(Quiz&& other);
+
 public:
+	Quiz();
+	Quiz(const Quiz& other);
+	Quiz(Quiz&& other) noexcept;
+	Quiz& operator=(const Quiz& other);
+	Quiz& operator=(Quiz&& other) noexcept;
+	~Quiz();
+
 	Quiz(std::istream& is);
 	Quiz(const String& ID, const String& title, const String& creatorUsername, const Vector<Question*> question);
 
@@ -36,6 +47,8 @@ public:
 	void playQuizShuffled();
 	void playQuizTest();
 	void playQuizTestShuffled();
+
+	static const String& generateID();
 
 	void serialize(std::ostream& os) const;
 	void deserialize(std::istream& is);

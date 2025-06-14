@@ -1,4 +1,5 @@
 #include "System.h"
+#include "QuestionFactory.h"
 #include <fstream>
 
 System& System::getInstance()
@@ -31,8 +32,8 @@ const Vector<Quiz>& System::getPending() const
 
 void System::fillQuizzes()
 {
-	std::ifstream quizzes("Quizzes.txt", std::ios::binary);
-	size_t size;
+	std::ifstream quizzes("Quizzes.bin", std::ios::binary);
+	size_t size = 0;
 	quizzes.read((char*)&size, sizeof(size));
 	this->quizzes = Vector<Quiz>(size);
 	
@@ -45,13 +46,14 @@ void System::fillQuizzes()
 
 void System::fillUsers()
 {
-	std::ifstream users("Users.txt", std::ios::binary);
-	size_t size;
+	std::ifstream users("Users.bin", std::ios::binary);
+	size_t size = 0;
 	users.read((char*)&size, sizeof(size));
 	this->users = Vector<User*>(size);
 	for (size_t i = 0; i < size; i++)
 	{
 		Role role = Role::Player;
+		users.read((char*)&role, sizeof(role));
 		if (role == Role::Player)
 		{
 			Player player;
@@ -71,8 +73,8 @@ void System::fillUsers()
 
 void System::fillPending()
 {
-	std::ifstream pending("Pending.txt", std::ios::binary);
-	size_t size;
+	std::ifstream pending("Pending.bin", std::ios::binary);
+	size_t size = 0;
 	pending.read((char*)&size, sizeof(size));
 	this->pending = Vector<Quiz>(size);
 	for (size_t i = 0; i < size; i++)
@@ -252,9 +254,33 @@ void System::banPlayer(const String& username)
 	throw std::invalid_argument("User not found!");
 }
 
+void System::createQuiz()
+{
+	if (!loggedUser || loggedUser->getRole() == Role::Admin)
+		throw std::logic_error("Cannot create quiz!");
+
+	String title = Console::readQuizTitle();
+	size_t size = Console::readQuizNumberOfQuestions();
+	Vector<Question*> questions;
+	for (size_t i = 0; i < size; i++)
+	{
+		questions.push_back(QuestionFactory::createQuestion());
+	}
+	String ID = Quiz::generateID();
+	pending.push_back(Quiz(ID, title, System::loggedUser->getUsername(), questions));
+}
+
 const User* System::getLoggedUser() const
 {
 	return this->loggedUser;
+}
+
+System::System()
+{
+	loggedUser = nullptr;
+	fillQuizzes();
+	fillPending();
+	fillUsers();
 }
 
 void System::free()
@@ -267,32 +293,9 @@ void System::free()
 	}
 }
 
-void System::copyFrom(const System& other)
-{
-	this->loggedUser = other.loggedUser;
-	this->quizzes = other.quizzes;
-	this->users = other.users;
-}
-
-void System::moveFrom(System&& other)
-{
-	this->loggedUser = other.loggedUser;
-	this->quizzes = other.quizzes;
-	this->users = other.users;
-
-	other.loggedUser = nullptr;
-	for (size_t i = 0; i < other.users.getSize(); i++)
-		other.users[i] = nullptr;
-}
-
-System::System(const System& other)
-{
-	copyFrom(other);
-}
-
 void System::serializeQuizzes() const
 {
-	std::ofstream saveQuizzes("Quizzes.txt", std::ios::binary);
+	std::ofstream saveQuizzes("Quizzes.bin", std::ios::binary);
 	size_t size = quizzes.getSize();
 	saveQuizzes.write((const char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
@@ -303,7 +306,7 @@ void System::serializeQuizzes() const
 
 void System::serializeUsers() const
 {
-	std::ofstream saveUsers("Users.txt", std::ios::binary);
+	std::ofstream saveUsers("Users.bin", std::ios::binary);
 	size_t size = users.getSize();
 	saveUsers.write((const char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
@@ -343,30 +346,6 @@ size_t System::indexOfPending(const String& quizID) const
 	}
 
 	throw std::invalid_argument("Quiz not found in pending!");
-}
-
-System::System(System&& other)
-{
-	moveFrom(std::move(other));
-}
-
-System& System::operator=(const System& other)
-{
-	if (this != &other)
-	{
-		free();
-		copyFrom(other);
-	}
-	return *this;
-}
-
-System& System::operator=(System&& other)
-{
-	if (this != &other)
-	{
-		free();
-		moveFrom(std::move(other));
-	}
 }
 
 System::~System()

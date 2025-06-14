@@ -81,6 +81,7 @@ const String& MultipleChoiceQuestion::rightAnswerToString() const
 		if (i != rightAnswers.getSize() - 1)
 			answer += ", ";
 	}
+	return answer;
 }
 
 void MultipleChoiceQuestion::serialize(std::ostream& os)

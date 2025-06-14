@@ -134,6 +134,7 @@
     <ClCompile Include="MultipleChoiceQuestion.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Question.cpp" />
+    <ClCompile Include="QuestionFactory.cpp" />
     <ClCompile Include="Quiz.cpp" />
     <ClCompile Include="QuizMaster.cpp" />
     <ClCompile Include="ShortAnswerQuestion.cpp" />
@@ -152,9 +153,9 @@
     <ClInclude Include="MultipleChoiceQuestion.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Question.h" />
+    <ClInclude Include="QuestionFactory.h" />
     <ClInclude Include="QuestionType.h" />
     <ClInclude Include="Quiz.h" />
-    <ClInclude Include="QuizMaster.h" />
     <ClInclude Include="Role.h" />
     <ClInclude Include="ShortAnswerQuestion.h" />
     <ClInclude Include="SingleChoiceQuestion.h" />
@@ -164,6 +165,9 @@
     <ClInclude Include="TrueOrFalseQuestion.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="Vector.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Users.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

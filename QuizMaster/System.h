@@ -13,15 +13,14 @@ private:
 	Vector<Quiz> pending;
 	System();
 
+	System(System&& other) = delete;
+	System& operator=(const System& other) = delete;
+	System& operator=(System&& other) = delete;
+	System(const System&) = delete;
+
 	void free();
-	void copyFrom(const System& other);
-	void moveFrom(System&& other);
 
 public:
-	System(const System& other);
-	System(System&& other);
-	System& operator=(const System& other);
-	System& operator=(System&& other);
 	~System();
 	
 	static System& getInstance();
@@ -32,7 +31,6 @@ public:
 	void fillQuizzes();
 	void fillUsers();
 	void fillPending();
-	System(const System&) = delete;
 	void serializeQuizzes() const;
 	void serializeUsers() const;
 
@@ -53,6 +51,7 @@ public:
 	void rejectQuiz(const String& quizID);
 	void removeQuiz(const String& quizID);
 	void banPlayer(const String& username);
+	void createQuiz();
 
 	const User* getLoggedUser() const;
 };

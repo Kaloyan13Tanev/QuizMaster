@@ -24,56 +24,56 @@ String Console::readLine()
 
 ;void Console::printCommandsNoLogin()
 {
-	std::cout << "Available commands:";
-	std::cout << "- login <username> <password>";
-	std::cout << "- quit";
-	std::cout << "- view-profile";
-	std::cout << "- view-challenges";
-	std::cout << "- view-finished-challenges";
-	std::cout << "- view <username>";
-	std::cout << "- messages";
-	std::cout << "- create-quiz";
-	std::cout << "- quizzes";
-	std::cout << "- quizzes <username>";
-	std::cout << "- like-quiz <quiz-id>";
-	std::cout << "- unlike-quiz <quiz-id>";
-	std::cout << "- add-to-favs <quiz-id>";
-	std::cout << "- remove-from-favs <quiz-id>";
-	std::cout << "- start-quiz <quiz-id> test|normal (shuffle)";
-	std::cout << "- save-quiz <quiz-id> <filepath>";
-	std::cout << "- report-quiz <quiz-id> <reason>";
+	std::cout << "\nAvailable commands:\n";
+	std::cout << "- logout\n";
+	std::cout << "- quit\n";
+	std::cout << "- signup <first-name> <last-name> <username> <password1> <password2>\n\n";
 }
 
 void Console::printCommandsAdmin()
 {
-	std::cout << "Available commands:";
-	std::cout << "- logout";
-	std::cout << "- quit";
-	std::cout << "- pending";
-	std::cout << "- approve-quiz <quiz-id>";
-	std::cout << "- reject-quiz <quiz-id> <reason>";
-	std::cout << "- remove-quiz <quiz-id> <reason>";
-	std::cout << "- view-reports";
-	std::cout << "- ban <username>";
+	std::cout << "\nAvailable commands:\n";
+	std::cout << "- logout\n";
+	std::cout << "- quit\n";
+	std::cout << "- pending\n";
+	std::cout << "- approve-quiz <quiz-id>\n";
+	std::cout << "- reject-quiz <quiz-id> <reason>\n";
+	std::cout << "- remove-quiz <quiz-id> <reason>\n";
+	std::cout << "- view-reports\n";
+	std::cout << "- ban <username>\n\n";
 }
 
 void Console::printCommandsPlayer()
 {
-	std::cout << "Available commands:";
-	std::cout << "- logout";
-	std::cout << "- quit";
-	std::cout << "- signup <first-name> <last-name> <username> <password1> <password2>";
+	std::cout << "\nAvailable commands:\n";
+	std::cout << "- login <username> <password>\n";
+	std::cout << "- quit\n";
+	std::cout << "- view-profile\n";
+	std::cout << "- view-challenges\n";
+	std::cout << "- view-finished-challenges\n";
+	std::cout << "- view <username>\n";
+	std::cout << "- messages\n";
+	std::cout << "- create-quiz\n";
+	std::cout << "- quizzes\n";
+	std::cout << "- quizzes <username>\n";
+	std::cout << "- like-quiz <quiz-id>\n";
+	std::cout << "- unlike-quiz <quiz-id>\n";
+	std::cout << "- add-to-favs <quiz-id>\n";
+	std::cout << "- remove-from-favs <quiz-id>\n";
+	std::cout << "- start-quiz <quiz-id> test|normal (shuffle)\n";
+	std::cout << "- save-quiz <quiz-id> <filepath>\n";
+	std::cout << "- report-quiz <quiz-id> <reason>\n\n";
 }
 
 void Console::Start()
 {
 	std::cout << "Welcome to QuizMaster!" << std::endl;
 	std::cout << "Type \"help\" for commands." << std::endl;
-	std::cout << "> ";
 	bool cont = true;
 
 	while (cont)
 	{
+		std::cout << "> ";
 		Vector<String> input = readLine().split(' ');
 		if (input.isEmpty())
 			throw std::invalid_argument("Command shouldn't be empty!");
@@ -158,7 +158,7 @@ void Console::Start()
 			if (input.getSize() != 1)
 				throw std::invalid_argument("Error: Unknown command!\nUsage: create-quiz");
 
-			//createQuiz(); save in a file
+			//createQuiz();
 		}
 		else if (input[0] == "quizzes")
 		{
@@ -447,4 +447,16 @@ void Console::printQuizResult(double accPoints, double maxPoints)
 void Console::printRightAnswers(const Question* question)
 {
 	std::cout << question->rightAnswerToString();
+}
+
+const String& Console::readQuizTitle()
+{
+	std::cout << "Quiz title: ";
+	return Console::readLine();
+}
+
+const size_t Console::readQuizNumberOfQuestions()
+{
+	std::cout << "Number of questions: ";
+	return Console::readLine().toUnsigned();
 }

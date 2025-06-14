@@ -75,6 +75,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\UserClasses</Filter>
     </ClCompile>
+    <ClCompile Include="QuestionFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector.hpp">
@@ -128,11 +131,16 @@
     <ClInclude Include="System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="QuizMaster.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="QuestionType.h">
       <Filter>Header Files\QuestionClasses</Filter>
     </ClInclude>
+    <ClInclude Include="QuestionFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Users.bin">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

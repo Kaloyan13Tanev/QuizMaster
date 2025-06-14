@@ -4,24 +4,32 @@ void User::setFirstName(const String& firstName)
 {
     if (firstName.getLen() == 0)
         throw std::invalid_argument("First name cannot be empty!");
+
+    this->firstName = firstName;
 }
 
 void User::setLastName(const String& lastName)
 {
     if (lastName.getLen() == 0)
         throw std::invalid_argument("Last name cannot be empty!");
+
+    this->lastName = lastName;
 }
 
 void User::setUsername(const String& username)
 {
     if (username.getLen() == 0)
         throw std::invalid_argument("Username cannot be empty!");
+
+    this->username = username;
 }
 
 void User::setPassword(const String& password)
 {
     if (password.getLen() < 8)
         throw std::invalid_argument("Password should be at least 8 characters long!");
+
+    this->password = password;
 }
 
 User::User()
@@ -129,7 +137,7 @@ void User::deserialize(std::istream& is)
     firstName.deserialize(is);
     lastName.deserialize(is);
     size_t size = 0;
-    is.read((char*)size, sizeof(size));
+    is.read((char*)&size, sizeof(size));
     favQuizes = Vector<String>(size);
     for (size_t i = 0; i < size; i++)
     {

@@ -4,6 +4,7 @@
 #include "MultipleChoiceQuestion.h"
 #include "ShortAnswerQuestion.h"
 #include "MatchingPairsQuestion.h"
+#include "System.h"
 #include <cstdlib> 
 #include <ctime>
 
@@ -32,6 +33,93 @@ void Quiz::setQuestions(const Vector<Question*> questions)
 	this->questions = Vector<Question*>(questions.getCapacity());
 	for (size_t i = 0; i < questions.getSize(); i++)
 		this->questions.push_back(questions[i]->clone());
+}
+
+void Quiz::free()
+{
+	for (size_t i = 0; i < questions.getSize(); i++)
+	{
+		delete questions[i];
+		questions[i] = nullptr;
+	}
+	ID = "";
+	title = "";
+	creatorUsername = "";
+	timesPlayed = 0;
+}
+
+void Quiz::copyFrom(const Quiz& other)
+{
+	this->ID = other.ID;
+	this->title = other.title;
+	this->creatorUsername = other.creatorUsername;
+	this->questions = Vector<Question*>(other.questions.getCapacity());
+	for (size_t i = 0; i < other.questions.getSize(); i++)
+	{
+		this->questions.push_back( other.questions[i]->clone());
+	}
+	this->timesPlayed = other.timesPlayed;
+	this->likes = other.likes;
+}
+
+void Quiz::moveFrom(Quiz&& other)
+{
+	this->ID = other.ID;
+	this->title = other.title;
+	this->creatorUsername = other.title;
+	this->questions = other.questions;
+	this->timesPlayed = other.timesPlayed;
+	this->likes = other.likes;
+
+	for (size_t i = 0; i < other.questions.getSize(); i++)
+	{
+		questions[i] = nullptr;
+	}
+}
+
+Quiz::Quiz()
+{
+	ID = "";
+	title = "";
+	creatorUsername = "";
+	questions = Vector<Question*>();
+	timesPlayed = 0;
+	likes = Vector<String>();
+}
+
+Quiz::Quiz(const Quiz& other)
+{
+	copyFrom(other);
+}
+
+Quiz::Quiz(Quiz&& other) noexcept
+{
+	moveFrom(std::move(other));
+}
+
+Quiz& Quiz::operator=(const Quiz& other)
+{
+	if (&other != this)
+	{
+		free();
+		copyFrom(other);
+	}
+	return *this;
+}
+
+Quiz& Quiz::operator=(Quiz&& other) noexcept
+{
+	if (&other != this)
+	{
+		free();
+		moveFrom(std::move(other));
+	}
+	return *this;
+}
+
+Quiz::~Quiz()
+{
+	free();
 }
 
 Quiz::Quiz(std::istream& is)
@@ -177,6 +265,42 @@ void Quiz::playQuizTestShuffled()
 		questions[numbers[i]]->answer();
 		Console::printRightAnswers(questions[numbers[i]]);
 	}
+}
+
+const String& Quiz::generateID()
+{
+	size_t length = 5;
+	const char charset[] =
+		"0123456789"
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		"abcdefghijklmnopqrstuvwxyz";
+
+	const size_t charsetSize = sizeof(charset) - 1;
+
+	String result;
+
+	static bool seeded = false;
+	if (!seeded) {
+		std::srand(static_cast<unsigned>(std::time(nullptr)));
+		seeded = true;
+	}
+
+	for (size_t i = 0; i < length; ++i) {
+		char randomChar = charset[rand() % charsetSize];
+		result += randomChar;
+	}
+
+	for (size_t i = 0; i < System::getInstance().getQuizzes().getSize(); i++)
+	{
+		if (System::getInstance().getQuizzes()[i].ID == result)
+			return generateID();
+	}
+	for (size_t i = 0; i < System::getInstance().getPending().getSize(); i++)
+	{
+		if (System::getInstance().getPending()[i].ID == result)
+			return generateID();
+	}
+	return result;
 }
 
 void Quiz::serialize(std::ostream& os) const

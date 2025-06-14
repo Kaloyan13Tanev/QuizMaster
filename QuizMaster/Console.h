@@ -2,6 +2,7 @@
 #include "String.h"
 #include "Vector.hpp"
 
+class Question;
 class TrueOrFalseQuestion;
 class SingleChoiceQuestion;
 class MultipleChoiceQuestion;
@@ -38,4 +39,7 @@ public:
 
 	static void printQuizResult(double accPoints, double maxPoints);
 	static void printRightAnswers(const Question* question);
+
+	static const String& readQuizTitle();
+	static const size_t readQuizNumberOfQuestions();
 };
