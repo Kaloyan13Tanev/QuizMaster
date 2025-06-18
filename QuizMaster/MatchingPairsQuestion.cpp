@@ -1,6 +1,11 @@
 #include "MatchingPairsQuestion.h"
 #include "Console.h"
 
+MatchingPairsQuestion::MatchingPairsQuestion(std::istream& is) : Question(is, QuestionType::MatchingPairs)
+{
+	this->deserialize(is);
+}
+
 void MatchingPairsQuestion::setFirstCol(const Vector<String>& firstCol)
 {
 	if (firstCol.getSize() <= 1)
@@ -38,10 +43,6 @@ void MatchingPairsQuestion::setRightConnections(const Vector<unsigned>& rightCon
 		this->rightConnections.push_back(rightConnections[i]);
 }
 
-MatchingPairsQuestion::MatchingPairsQuestion(std::istream& is) : Question(is)
-{
-	this->deserialize(is);
-}
 
 MatchingPairsQuestion::MatchingPairsQuestion(const String& question, double points, const Vector<String>& firstCol,
 	const Vector<String>& secondCol, const Vector<unsigned>& rightAnswers) : Question(question, points, QuestionType::MatchingPairs)
@@ -84,34 +85,36 @@ double MatchingPairsQuestion::answer() const
 	return this->getPoints();
 }
 
-const String& MatchingPairsQuestion::rightAnswerToString() const
+String MatchingPairsQuestion::rightAnswerToString() const
 {
 	String string = "Right answers: ";
 	for (size_t i = 1; i <= firstCol.getSize(); i++)
 	{
-		string += i;
+		string += String(i);
 		string += '.';
 		string += 'a' + rightConnections[i - 1] - 1;
 		if (i != firstCol.getSize())
 			string += ', ';
 	}
-	return string;
+	return string + "\n";
 }
 
 void MatchingPairsQuestion::serialize(std::ostream& os)
 {
 	Question::serialize(os);
-	size_t size;
+	size_t size = this->firstCol.getSize();
 	os.write((const char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
 		this->firstCol[i].serialize(os);
 	}
+	size = this->secondCol.getSize();
 	os.write((const char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
 		this->secondCol[i].serialize(os);
 	}
+	size = this->rightConnections.getSize();
 	os.write((const char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
@@ -121,21 +124,28 @@ void MatchingPairsQuestion::serialize(std::ostream& os)
 
 void MatchingPairsQuestion::deserialize(std::istream& is)
 {
-	Question::deserialize(is);
-	size_t size;
+	size_t size = 0;
 	is.read((char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
-		this->firstCol[i].deserialize(is);
+		String fc;
+		fc.deserialize(is);
+		this->firstCol.push_back(fc);
 	}
+	size = 0;
 	is.read((char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
-		this->secondCol[i].deserialize(is);
+		String sc;
+		sc.deserialize(is);
+		this->secondCol.push_back(sc);
 	}
+	size = 0;
 	is.read((char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
-		is.read((char*)&this->rightConnections[i], sizeof(this->rightConnections[i]));
+		unsigned u;
+		is.read((char*)&u, sizeof(u));
+		this->rightConnections.push_back(u);
 	}
 }

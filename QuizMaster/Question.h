@@ -13,7 +13,7 @@ private:
 	void setPoints(double points);
 
 public:
-	Question(std::istream& is);
+	Question(std::istream& is, QuestionType type);
 	virtual ~Question() = default;
 
 	virtual Question* clone() const = 0;
@@ -25,7 +25,7 @@ public:
 	const QuestionType getQuestionType() const;
 
 	virtual double answer() const = 0;
-	virtual const String& rightAnswerToString() const = 0;
+	virtual String rightAnswerToString() const = 0;
 
 	virtual void serialize(std::ostream& os);
 	virtual void deserialize(std::istream& is);

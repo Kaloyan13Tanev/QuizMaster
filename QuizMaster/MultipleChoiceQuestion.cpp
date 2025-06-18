@@ -23,7 +23,7 @@ void MultipleChoiceQuestion::setRightAnswers(const Vector<unsigned>& rightAnswer
 	}
 }
 
-MultipleChoiceQuestion::MultipleChoiceQuestion(std::istream& is) : Question(is)
+MultipleChoiceQuestion::MultipleChoiceQuestion(std::istream& is) : Question(is, QuestionType::MultipleChoice)
 {
 	this->deserialize(is);
 }
@@ -63,7 +63,7 @@ double MultipleChoiceQuestion::answer() const
 			points += pointsPerRight;
 	}
 
-	if (points == this->getPoints() && givenAnswers.getSize() > this->getRightAnswers().getSize())
+	if (points - this->getPoints() < 0.0000001 && givenAnswers.getSize() > this->getRightAnswers().getSize())
 		points -= pointsPerRight * (this->getRightAnswers().getSize() - givenAnswers.getSize());
 
 	if (points < 0)
@@ -72,27 +72,28 @@ double MultipleChoiceQuestion::answer() const
 	return points;
 }
 
-const String& MultipleChoiceQuestion::rightAnswerToString() const
+String MultipleChoiceQuestion::rightAnswerToString() const
 {
 	String answer = "Right answers: ";
 	for (size_t i = 0; i < rightAnswers.getSize(); i++)
 	{
-		answer += rightAnswers[i];
+		answer += String((char)('a' + rightAnswers[i] - 1));
 		if (i != rightAnswers.getSize() - 1)
 			answer += ", ";
 	}
-	return answer;
+	return answer + "\n";
 }
 
 void MultipleChoiceQuestion::serialize(std::ostream& os)
 {
 	Question::serialize(os);
-	size_t size;
+	size_t size = this->answers.getSize();
 	os.write((const char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
 		this->answers[i].serialize(os);
 	}
+	size = this->rightAnswers.getSize();
 	os.write((const char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
@@ -102,16 +103,20 @@ void MultipleChoiceQuestion::serialize(std::ostream& os)
 
 void MultipleChoiceQuestion::deserialize(std::istream& is)
 {
-	Question::deserialize(is);
-	size_t size;
+	size_t size = 0;
 	is.read((char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
-		this->answers[i].deserialize(is);
+		String a;
+		a.deserialize(is);
+		this->answers.push_back(a);
 	}
+	size = 0;
 	is.read((char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
-		is.read((char*)&this->rightAnswers[i], sizeof(this->rightAnswers[i]));
+		unsigned u;
+		is.read((char*)&u, sizeof(u));
+		this->rightAnswers.push_back(u);
 	}
 }

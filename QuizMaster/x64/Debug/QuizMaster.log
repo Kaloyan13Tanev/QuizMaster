@@ -1,2 +1,4 @@
-﻿  User.cpp
+﻿  Quiz.cpp
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Quiz.cpp(171): warning C4172: returning address of local variable or temporary: constQuestions
+C:\Users\Kaloyan\source\repos\QuizMaster\QuizMaster\Quiz.cpp(182): warning C4717: 'Quiz::getLikes': recursive on all control paths, function will cause runtime stack overflow
   QuizMaster.vcxproj -> C:\Users\Kaloyan\source\repos\QuizMaster\x64\Debug\QuizMaster.exe

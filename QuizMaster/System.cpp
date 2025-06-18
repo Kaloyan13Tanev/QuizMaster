@@ -13,16 +13,16 @@ const Vector<Quiz>& System::getQuizzes() const
 	return quizzes;
 }
 
-const Vector<Quiz>& System::getQuizzesByCreator(const String& creatorUsername) const
+Vector<Quiz> System::getQuizzesByCreator(const String& creatorUsername) const
 {
-	Vector<Quiz> quizzes;
+	Vector<Quiz> quizzesByCreator;
 	for (size_t i = 0; i < quizzes.getSize(); i++)
 	{
 		if (quizzes[i].getCreator() == creatorUsername)
-			quizzes.push_back(quizzes[i]);
+			quizzesByCreator.push_back(quizzes[i]);
 	}
 
-	return quizzes;
+	return quizzesByCreator;
 }
 
 const Vector<Quiz>& System::getPending() const
@@ -33,6 +33,10 @@ const Vector<Quiz>& System::getPending() const
 void System::fillQuizzes()
 {
 	std::ifstream quizzes("Quizzes.bin", std::ios::binary);
+
+	/*if (!quizzes.is_open())
+		throw std::*/
+
 	size_t size = 0;
 	quizzes.read((char*)&size, sizeof(size));
 	this->quizzes = Vector<Quiz>(size);
@@ -42,19 +46,24 @@ void System::fillQuizzes()
 		Quiz quiz(quizzes);
 		this->quizzes.push_back(quiz);
 	}
+	quizzes.close();
 }
 
 void System::fillUsers()
 {
 	std::ifstream users("Users.bin", std::ios::binary);
+
+	/*if (!users.is_open())
+		throw std::*/
+
 	size_t size = 0;
 	users.read((char*)&size, sizeof(size));
 	this->users = Vector<User*>(size);
 	for (size_t i = 0; i < size; i++)
 	{
-		Role role = Role::Player;
-		users.read((char*)&role, sizeof(role));
-		if (role == Role::Player)
+		int roleInt = 0;
+		users.read((char*)&roleInt, sizeof(roleInt));
+		if ((Role)roleInt == Role::Player)
 		{
 			Player player;
 			player.deserialize(users);
@@ -69,19 +78,24 @@ void System::fillUsers()
 			this->users.push_back(admin.clone());
 		}
 	}
+	users.close();
 }
 
 void System::fillPending()
 {
 	std::ifstream pending("Pending.bin", std::ios::binary);
+
+	/*if (!pending.is_open())
+		throw std::*/
+
 	size_t size = 0;
 	pending.read((char*)&size, sizeof(size));
 	this->pending = Vector<Quiz>(size);
 	for (size_t i = 0; i < size; i++)
 	{
-		Quiz quiz(pending);
-		this->pending.push_back(quiz);
+		this->pending.push_back(Quiz(pending));
 	}
+	pending.close();
 }
 
 void System::login(const String& username, const String& password)
@@ -97,7 +111,7 @@ void System::login(const String& username, const String& password)
 	}
 
 	if (loggedUser == nullptr)
-		throw std::invalid_argument("User not found!");
+		throw std::invalid_argument("Username or password is incorrect!");
 }
 
 void System::logout()
@@ -105,8 +119,9 @@ void System::logout()
 	if (loggedUser == nullptr)
 		throw std::invalid_argument("No profile logged in!");
 
-	System::getInstance().serializeQuizzes();
-	System::getInstance().serializeUsers();
+	serializeQuizzes();
+	serializeUsers();
+	serializePending();
 	loggedUser = nullptr;
 }
 
@@ -121,10 +136,16 @@ void System::quit()
 void System::signup(const String& firstName, const String& lastName, const String& username, const String& password1, const String& password2)
 {
 	if (loggedUser != nullptr)
-		throw std::invalid_argument("Profile already logged in!");
+		throw std::invalid_argument("Profile already logged in!\n");
 
 	if (password1 != password2)
-		throw std::invalid_argument("The password is not typed correctly!");
+		throw std::invalid_argument("The password is not typed correctly!\n");
+
+	for (size_t i = 0; i < users.getSize(); i++)
+	{
+		if (users[i]->getUsername() == username)
+			throw std::invalid_argument("Username already taken!\n");
+	}
 
 	Player player = Player(firstName, lastName, username, password1);
 	users.push_back(player.clone());
@@ -302,6 +323,7 @@ void System::serializeQuizzes() const
 	{
 		quizzes[i].serialize(saveQuizzes);
 	}
+	//saveQuizzes.close();
 }
 
 void System::serializeUsers() const
@@ -313,6 +335,19 @@ void System::serializeUsers() const
 	{
 		users[i]->serialize(saveUsers);
 	}
+	//saveUsers.close();
+}
+
+void System::serializePending() const
+{
+	std::ofstream savePending("Pending.bin", std::ios::binary);
+	size_t size = pending.getSize();
+	savePending.write((const char*)&size, sizeof(size));
+	for (size_t i = 0; i < size; i++)
+	{
+		pending[i].serialize(savePending);
+	}
+	//savePending.close();
 }
 
 const User* System::findUser(const String& username) const

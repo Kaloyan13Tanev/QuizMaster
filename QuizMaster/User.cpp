@@ -32,12 +32,13 @@ void User::setPassword(const String& password)
     this->password = password;
 }
 
-User::User()
+User::User(Role role)
 {
     firstName = "";
     lastName = "";
     username = "";
     password = "";
+    this->role = role;
 }
 
 User::User(const String& firstName, const String& lastName, const String& username, const String& password, Role role)
@@ -117,7 +118,8 @@ void User::read(std::istream& is)
 
 void User::serialize(std::ostream& os) const
 {
-    os.write((const char*)&role, sizeof(role));
+    int roleInt = (int)role;
+    os.write((const char*)&roleInt, sizeof(roleInt));
     username.serialize(os);
     password.serialize(os);
     firstName.serialize(os);
@@ -149,7 +151,6 @@ void User::deserialize(std::istream& is)
     this->password = password;
     this->firstName = firstName;
     this->lastName = lastName;
-    this->role = role;
     this->favQuizes = Vector<String>(favQuizzes);
 }
 

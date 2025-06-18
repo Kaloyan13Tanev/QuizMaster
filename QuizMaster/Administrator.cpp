@@ -1,6 +1,6 @@
 #include "Administrator.h"
 
-Admin::Admin() : User()
+Admin::Admin() : User(Role::Admin)
 {
 }
 

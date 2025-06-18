@@ -19,7 +19,7 @@ private:
 	void setPassword(const String& password);
 
 public:
-	User();
+	User(Role role);
 	User(const String& firstName, const String& lastName, const String& username, const String& password, Role role);
 	User(const String& firstName, const String& lastName, const String& username, const String& password, Role role, Vector<String> favQuizzes);
 

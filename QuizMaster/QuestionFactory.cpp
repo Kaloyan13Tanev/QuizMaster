@@ -12,7 +12,7 @@ TrueOrFalseQuestion* QuestionFactory::createTrueOrFalseQuestion()
 	answer = Console::readLine();
 	answer.makeLower();
 
-	if (answer != 'true' && answer != "false")
+	if (answer != "true" && answer != "false")
 		throw std::invalid_argument("Answer should be 'true' or 'false'!");
 
 	std::cout << "Points: ";
@@ -22,13 +22,13 @@ TrueOrFalseQuestion* QuestionFactory::createTrueOrFalseQuestion()
 
 	if (answer == "true")
 	{
-		TrueOrFalseQuestion tf(question, points, true);
-		return &tf;
+		
+		return new TrueOrFalseQuestion(question, points, true);
 	}
 	else
 	{
-		TrueOrFalseQuestion tf(question, points, false);
-		return &tf;
+		
+		return new TrueOrFalseQuestion(question, points, false);
 	}
 }
 
@@ -46,8 +46,7 @@ SingleChoiceQuestion* QuestionFactory::createSingleChoiceQuestion()
 	std::cout << "Points: ";
 	unsigned points = Console::readLine().toUnsigned();
 
-	SingleChoiceQuestion sc(question, points, answers, rightAnswer);
-	return &sc;
+	return new SingleChoiceQuestion(question, points, answers, rightAnswer);
 }
 
 MultipleChoiceQuestion* QuestionFactory::createMultipleChoiceQuestion()
@@ -69,8 +68,7 @@ MultipleChoiceQuestion* QuestionFactory::createMultipleChoiceQuestion()
 	std::cout << "Points: ";
 	unsigned points = Console::readLine().toUnsigned();
 
-	MultipleChoiceQuestion mc(question, points, answers, rightAnswers);
-	return &mc;
+	return new MultipleChoiceQuestion(question, points, answers, rightAnswers);
 }
 
 MatchingPairsQuestion* QuestionFactory::createMatchingPairsQuestion()
@@ -100,8 +98,7 @@ MatchingPairsQuestion* QuestionFactory::createMatchingPairsQuestion()
 	std::cout << "Points: ";
 	unsigned points = Console::readLine().toUnsigned();
 
-	MatchingPairsQuestion mp(question, points, firstCol, secondCol, rightAnswers);
-	return &mp;
+	return new MatchingPairsQuestion(question, points, firstCol, secondCol, rightAnswers);
 }
 
 ShortAnswerQuestion* QuestionFactory::createShortAnswerQuestion()
@@ -115,8 +112,7 @@ ShortAnswerQuestion* QuestionFactory::createShortAnswerQuestion()
 	std::cout << "Points: ";
 	unsigned points = Console::readLine().toUnsigned();
 
-	ShortAnswerQuestion sa(question, points, answer);
-	return &sa;
+	return new ShortAnswerQuestion (question, points, answer);
 }
 
 Question* QuestionFactory::createQuestion()

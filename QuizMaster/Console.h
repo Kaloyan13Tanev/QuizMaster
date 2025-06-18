@@ -40,6 +40,6 @@ public:
 	static void printQuizResult(double accPoints, double maxPoints);
 	static void printRightAnswers(const Question* question);
 
-	static const String& readQuizTitle();
-	static const size_t readQuizNumberOfQuestions();
+	static String readQuizTitle();
+	static size_t readQuizNumberOfQuestions();
 };

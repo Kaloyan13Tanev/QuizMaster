@@ -2,7 +2,7 @@
 #include "Console.h"
 #include <iostream>
 
-SingleChoiceQuestion::SingleChoiceQuestion(std::istream& is) : Question(is)
+SingleChoiceQuestion::SingleChoiceQuestion(std::istream& is) : Question(is, QuestionType::SingleChoice)
 {
 	this->deserialize(is);
 }
@@ -34,9 +34,9 @@ double SingleChoiceQuestion::answer() const
 	return 0;
 }
 
-const String& SingleChoiceQuestion::rightAnswerToString() const
+String SingleChoiceQuestion::rightAnswerToString() const
 {
-	return "Right answer: " + rightAnswer;
+	return "Right answer: " + String((char)('a' + rightAnswer - 1)) + "\n";
 }
 
 void SingleChoiceQuestion::serialize(std::ostream& os)
@@ -53,8 +53,7 @@ void SingleChoiceQuestion::serialize(std::ostream& os)
 
 void SingleChoiceQuestion::deserialize(std::istream& is)
 {
-	Question::deserialize(is);
-	size_t size;
+	size_t size = 0;
 	is.read((char*)&size, sizeof(size));
 	this->answers = Vector<String>(size);
 	for (size_t i = 0; i < size; i++)
@@ -63,7 +62,7 @@ void SingleChoiceQuestion::deserialize(std::istream& is)
 		answer.deserialize(is);
 		this->answers.push_back(answer);
 	}
-	unsigned rightAnswer;
+	unsigned rightAnswer = 0;
 	is.read((char*)&rightAnswer, sizeof(rightAnswer));
 	this->rightAnswer = rightAnswer;
 }

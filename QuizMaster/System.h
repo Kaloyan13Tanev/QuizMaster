@@ -25,7 +25,7 @@ public:
 	
 	static System& getInstance();
 	const Vector<Quiz>& getQuizzes() const;
-	const Vector<Quiz>& getQuizzesByCreator(const String& creatorUsername) const;
+	Vector<Quiz> getQuizzesByCreator(const String& creatorUsername) const;
 	const Vector<Quiz>& getPending() const;
 
 	void fillQuizzes();
@@ -33,6 +33,7 @@ public:
 	void fillPending();
 	void serializeQuizzes() const;
 	void serializeUsers() const;
+	void serializePending() const;
 
 	const User* findUser(const String& username) const;
 	size_t indexOf(const String& quizID) const;

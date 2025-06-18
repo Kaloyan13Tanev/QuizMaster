@@ -25,7 +25,7 @@ void Quiz::setTitle(const String& title)
 	this->title = title;
 }
 
-void Quiz::setQuestions(const Vector<Question*> questions)
+void Quiz::setQuestions(const Vector<Question*>& questions)
 {
 	if (questions.getSize() == 0)
 		throw std::invalid_argument("There must be at least one question in the quiz!");
@@ -56,7 +56,7 @@ void Quiz::copyFrom(const Quiz& other)
 	this->questions = Vector<Question*>(other.questions.getCapacity());
 	for (size_t i = 0; i < other.questions.getSize(); i++)
 	{
-		this->questions.push_back( other.questions[i]->clone());
+		this->questions.push_back(other.questions[i]->clone());
 	}
 	this->timesPlayed = other.timesPlayed;
 	this->likes = other.likes;
@@ -66,14 +66,14 @@ void Quiz::moveFrom(Quiz&& other)
 {
 	this->ID = other.ID;
 	this->title = other.title;
-	this->creatorUsername = other.title;
+	this->creatorUsername = other.creatorUsername;
 	this->questions = other.questions;
 	this->timesPlayed = other.timesPlayed;
 	this->likes = other.likes;
 
 	for (size_t i = 0; i < other.questions.getSize(); i++)
 	{
-		questions[i] = nullptr;
+		other.questions[i] = nullptr;
 	}
 }
 
@@ -127,7 +127,7 @@ Quiz::Quiz(std::istream& is)
 	deserialize(is);
 }
 
-Quiz::Quiz(const String& ID, const String& title, const String& creatorUsername, const Vector<Question*> question)
+Quiz::Quiz(const String& ID, const String& title, const String& creatorUsername, const Vector<Question*>& questions)
 {
 	setID(ID);
 	setTitle(title);
@@ -207,6 +207,7 @@ void Quiz::playQuiz()
 		maxPoints += questions[i]->getPoints();
 	}
 	Console::printQuizResult(accPoints, maxPoints);
+	timesPlayed++;
 }
 
 void Quiz::playQuizShuffled()
@@ -217,11 +218,11 @@ void Quiz::playQuizShuffled()
 
 	Vector<size_t> numbers(size);
 	for (size_t i = 0; i < size; ++i)
-		numbers[i] = i;
+		numbers.push_back(i);
 
 	for (size_t i = size - 1; i > 0; --i)
 	{
-		size_t j = rand() % (i + 1);  
+		size_t j = rand() % (i + 1);
 		std::swap(numbers[i], numbers[j]);
 	}
 
@@ -252,7 +253,7 @@ void Quiz::playQuizTestShuffled()
 
 	Vector<size_t> numbers(size);
 	for (size_t i = 0; i < size; ++i)
-		numbers[i] = i;
+		numbers.push_back(i);
 
 	for (size_t i = size - 1; i > 0; --i)
 	{
@@ -267,7 +268,7 @@ void Quiz::playQuizTestShuffled()
 	}
 }
 
-const String& Quiz::generateID()
+String Quiz::generateID()
 {
 	size_t length = 5;
 	const char charset[] =
@@ -312,7 +313,7 @@ void Quiz::serialize(std::ostream& os) const
 	os.write((const char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
-		this->questions[i]->clone()->serialize(os);
+		this->questions[i]->serialize(os);
 	}
 	os.write((const char*)&timesPlayed, sizeof(timesPlayed));
 	size = this->likes.getSize();
@@ -328,47 +329,46 @@ void Quiz::deserialize(std::istream& is)
 	ID.deserialize(is);
 	title.deserialize(is);
 	creatorUsername.deserialize(is);
-	size_t size;
+	size_t size = 0;
 	is.read((char*)&size, sizeof(size));
 	for (size_t i = 0; i < size; i++)
 	{
-		QuestionType questionType;
-		is.read((char*)&questionType, sizeof(size));
+		int typeInt = 0;
+		is.read((char*)&typeInt, sizeof(typeInt));
+		QuestionType type = (QuestionType)typeInt;
 
-		if (questionType == QuestionType::TrueOrFalse)
-		{
-			TrueOrFalseQuestion tf = TrueOrFalseQuestion(is);
-			this->questions.push_back(tf.clone());
+		Question* current = nullptr;
+		switch (type) {
+		case QuestionType::TrueOrFalse:
+			current = new TrueOrFalseQuestion(is);
+			break;
+		case QuestionType::MatchingPairs:
+			current = new MatchingPairsQuestion(is);
+			break;
+		case QuestionType::MultipleChoice:
+			current = new MultipleChoiceQuestion(is);
+			break;
+		case QuestionType::ShortAnswer:
+			current = new ShortAnswerQuestion(is);
+			break;
+		case QuestionType::SingleChoice:
+			current = new SingleChoiceQuestion(is);
+			break;
+		default: throw std::invalid_argument("Invalid question type!");
 		}
-		else if (questionType == QuestionType::SingleChoice)
-		{
-			SingleChoiceQuestion sc = SingleChoiceQuestion(is);
-			this->questions.push_back(sc.clone());
-		}
-		else if (questionType == QuestionType::MultipleChoice)
-		{
-			MultipleChoiceQuestion mc = MultipleChoiceQuestion(is);
-			this->questions.push_back(mc.clone());
-		}
-		else if (questionType == QuestionType::ShortAnswer)
-		{
-			ShortAnswerQuestion sa = ShortAnswerQuestion(is);
-			this->questions.push_back(sa.clone());
-		}
-		else if (questionType == QuestionType::MatchingPairs)
-		{
-			MatchingPairsQuestion mp = MatchingPairsQuestion(is);
-			this->questions.push_back(mp.clone());
-		}
+		this->questions.push_back(current);
 	}
 
 	is.read((char*)&this->timesPlayed, sizeof(this->timesPlayed));
 
+	size = 0;
 	is.read((char*)&size, sizeof(size));
 	this->likes = Vector<String>(size);
 	for (size_t i = 0; i < size; i++)
 	{
-		this->likes[i].deserialize(is);
+		String like;
+		like.deserialize(is);
+		this->likes.push_back(like);
 	}
 }
 

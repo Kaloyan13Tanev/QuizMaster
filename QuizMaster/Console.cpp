@@ -25,7 +25,7 @@ String Console::readLine()
 ;void Console::printCommandsNoLogin()
 {
 	std::cout << "\nAvailable commands:\n";
-	std::cout << "- logout\n";
+	std::cout << "- login <username> <password>\n";
 	std::cout << "- quit\n";
 	std::cout << "- signup <first-name> <last-name> <username> <password1> <password2>\n\n";
 }
@@ -40,13 +40,13 @@ void Console::printCommandsAdmin()
 	std::cout << "- reject-quiz <quiz-id> <reason>\n";
 	std::cout << "- remove-quiz <quiz-id> <reason>\n";
 	std::cout << "- view-reports\n";
-	std::cout << "- ban <username>\n\n";
+	std::cout << "- ban <username>\n";
 }
 
 void Console::printCommandsPlayer()
 {
 	std::cout << "\nAvailable commands:\n";
-	std::cout << "- login <username> <password>\n";
+	std::cout << "- logout\n";
 	std::cout << "- quit\n";
 	std::cout << "- view-profile\n";
 	std::cout << "- view-challenges\n";
@@ -62,238 +62,247 @@ void Console::printCommandsPlayer()
 	std::cout << "- remove-from-favs <quiz-id>\n";
 	std::cout << "- start-quiz <quiz-id> test|normal (shuffle)\n";
 	std::cout << "- save-quiz <quiz-id> <filepath>\n";
-	std::cout << "- report-quiz <quiz-id> <reason>\n\n";
+	std::cout << "- report-quiz <quiz-id> <reason>\n";
 }
 
 void Console::Start()
 {
 	std::cout << "Welcome to QuizMaster!" << std::endl;
-	std::cout << "Type \"help\" for commands." << std::endl;
+	std::cout << "Type \"help\" for commands.\n" << std::endl;
 	bool cont = true;
 
 	while (cont)
 	{
-		std::cout << "> ";
-		Vector<String> input = readLine().split(' ');
-		if (input.isEmpty())
-			throw std::invalid_argument("Command shouldn't be empty!");
+		try
+		{
+			std::cout << "> ";
+			Vector<String> input = readLine().split(' ');
+			if (input.isEmpty())
+				throw std::invalid_argument("Command shouldn't be empty!\n");
 
-		if (input[0] == "login")
-		{
-			if (input.getSize() != 3)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: login <username> <password>");
-
-			System::getInstance().login(input[1], input[2]);
-		}
-		else if (input[0] == "help")
-		{
-			if (input.getSize() != 1)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: help");
-
-			if (System::getInstance().getLoggedUser() == nullptr)
-				printCommandsNoLogin();
-			else if (System::getInstance().getLoggedUser()->getRole() == Role::Admin)
-				printCommandsAdmin();
-			else
-				printCommandsPlayer();
-		}
-		else if (input[0] == "logout")
-		{
-			if (input.getSize() != 1)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: logout");
-
-			System::getInstance().logout();
-		}
-		else if (input[0] == "quit")
-		{
-			if (input.getSize() != 1)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: quit");
-
-			System::getInstance().quit();
-			cont = false;
-		}
-		else if (input[0] == "signup")
-		{
-			if (input.getSize() != 6)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: signup <first-name> <last-name> <username> <password1> <password2>");
-
-			System::getInstance().signup(input[1], input[2], input[3], input[4], input[5]);
-		}
-		else if (input[0] == "view-profile")
-		{
-			if (input.getSize() != 1)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: view-profile");
-
-			std::cout << System::getInstance().getLoggedUser();
-		}
-		else if (input[0] == "view-challenges")
-		{
-			if (input.getSize() != 1)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: view-challenges");
-			//add challenges to player
-		}
-		else if (input[0] == "view-finished-challenges")
-		{
-			if (input.getSize() != 1)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: view-finished-challenges");
-
-			//add challenges to player
-		}
-		else if (input[0] == "view")
-		{
-			if (input.getSize() != 2)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: view <username>");
-
-			std::cout << System::getInstance().findUser(input[1]);
-		}
-		else if (input[0] == "messages")
-		{
-			if (input.getSize() != 1)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: messages");
-
-			//make messages for player Vector<String> 
-		}
-		else if (input[0] == "create-quiz")
-		{
-			if (input.getSize() != 1)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: create-quiz");
-
-			//createQuiz();
-		}
-		else if (input[0] == "quizzes")
-		{
-			if (input.getSize() == 1)
+			if (input[0] == "login")
 			{
-				for (size_t i = 0; i < System::getInstance().getQuizzes().getSize(); i++)
-				{
-					std::cout << System::getInstance().getQuizzes()[i];
-				}
+				if (input.getSize() != 3)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: login <username> <password>\n");
+
+				System::getInstance().login(input[1], input[2]);
 			}
-			else if (input.getSize() == 2)
+			else if (input[0] == "help")
 			{
-				Vector<Quiz> quizzesByUser = System::getInstance().getQuizzesByCreator(input[1]);
+				if (input.getSize() != 1)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: help\n");
 
-				if (quizzesByUser.getSize() == 0)
-					std::cout << "This user has not created any quizzes!";
+				if (System::getInstance().getLoggedUser() == nullptr)
+					printCommandsNoLogin();
+				else if (System::getInstance().getLoggedUser()->getRole() == Role::Admin)
+					printCommandsAdmin();
 				else
+					printCommandsPlayer();
+			}
+			else if (input[0] == "logout")
+			{
+				if (input.getSize() != 1)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: logout\n");
+
+				System::getInstance().logout();
+			}
+			else if (input[0] == "quit")
+			{
+				if (input.getSize() != 1)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: quit\n");
+
+				System::getInstance().quit();
+				cont = false;
+			}
+			else if (input[0] == "signup")
+			{
+				if (input.getSize() != 6)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: signup <first-name> <last-name> <username> <password1> <password2>\n");
+
+				System::getInstance().signup(input[1], input[2], input[3], input[4], input[5]);
+			}
+			else if (input[0] == "view-profile")
+			{
+				if (input.getSize() != 1)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: view-profile\n");
+
+				std::cout << *System::getInstance().getLoggedUser();
+			}
+			else if (input[0] == "view-challenges")
+			{
+				if (input.getSize() != 1)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: view-challenges\n");
+				//add challenges to player
+			}
+			else if (input[0] == "view-finished-challenges")
+			{
+				if (input.getSize() != 1)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: view-finished-challenges\n");
+
+				//add challenges to player
+			}
+			else if (input[0] == "view")
+			{
+				if (input.getSize() != 2)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: view <username>\n");
+
+				std::cout << *System::getInstance().findUser(input[1]);
+			}
+			else if (input[0] == "messages")
+			{
+				if (input.getSize() != 1)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: messages\n");
+
+				//make messages for player Vector<String> 
+			}
+			else if (input[0] == "create-quiz")
+			{
+				if (input.getSize() != 1)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: create-quiz\n");
+
+				System::getInstance().createQuiz();
+			}
+			else if (input[0] == "quizzes")
+			{
+				if (input.getSize() == 1)
 				{
-					for (size_t i = 0; i < quizzesByUser.getSize(); i++)
+					for (size_t i = 0; i < System::getInstance().getQuizzes().getSize(); i++)
 					{
-						std::cout << quizzesByUser[i];
+						std::cout << System::getInstance().getQuizzes()[i];
 					}
 				}
-			}
-			else
-				throw std::invalid_argument("Error: Unknown command!\nUsage: quizzes | quizzes <username>");
-		}
-		else if (input[0] == "like-quiz")
-		{
-			if (input.getSize() != 2)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: like-quiz <quiz-id>");
+				else if (input.getSize() == 2)
+				{
+					Vector<Quiz> quizzesByUser = System::getInstance().getQuizzesByCreator(input[1]);
 
-			System::getInstance().likeQuiz(input[1]);
-		}
-		else if (input[0] == "unlike-quiz")
-		{
-			if (input.getSize() != 2)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: unlike-quiz <quiz-id>");
-
-			System::getInstance().unlikeQuiz(input[1]);
-		}
-		else if (input[0] == "add-to-favs")
-		{
-			if (input.getSize() != 2)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: add-to-favs <quiz-id>");
-
-			System::getInstance().addToFavs(input[1]);
-		}
-		else if (input[0] == "remove-from-favs")
-		{
-			if (input.getSize() != 2)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: remove-from-favs <quiz-id>");
-
-			System::getInstance().removeFromFavs(input[1]);
-		}
-		else if (input[0] == "start-quiz")
-		{
-			bool isValid = input.getSize() == 3 || input.getSize() == 4;
-			if (isValid)
-				isValid = (input[2] == "test" || input[2] == "normal");
-			if (input.getSize() == 4)
-				isValid = (input[3] == "shuffle");
-
-			if (!isValid)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: start-quiz <quiz-id> test|normal (shuffle)");
-
-			if (input[2] == "normal")
-			{
-				if (input.getSize() == 3)
-					System::getInstance().startQuiz(input[1], false, false);
+					if (quizzesByUser.getSize() == 0)
+						std::cout << "This user has not created any quizzes!\n";
+					else
+					{
+						for (size_t i = 0; i < quizzesByUser.getSize(); i++)
+						{
+							std::cout << quizzesByUser[i];
+						}
+					}
+				}
 				else
-					System::getInstance().startQuiz(input[1], false, true);
+					throw std::invalid_argument("Error: Unknown command!\nUsage: quizzes | quizzes <username>\n");
 			}
-			else
+			else if (input[0] == "like-quiz")
 			{
-				if (input.getSize() == 3)
-					System::getInstance().startQuiz(input[1], true, false);
+				if (input.getSize() != 2)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: like-quiz <quiz-id>\n");
+
+				System::getInstance().likeQuiz(input[1]);
+			}
+			else if (input[0] == "unlike-quiz")
+			{
+				if (input.getSize() != 2)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: unlike-quiz <quiz-id>\n");
+
+				System::getInstance().unlikeQuiz(input[1]);
+			}
+			else if (input[0] == "add-to-favs")
+			{
+				if (input.getSize() != 2)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: add-to-favs <quiz-id>\n");
+
+				System::getInstance().addToFavs(input[1]);
+			}
+			else if (input[0] == "remove-from-favs")
+			{
+				if (input.getSize() != 2)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: remove-from-favs <quiz-id>\n");
+
+				System::getInstance().removeFromFavs(input[1]);
+			}
+			else if (input[0] == "start-quiz")
+			{
+				bool isValid = input.getSize() == 3 || input.getSize() == 4;
+				if (isValid)
+					isValid = (input[2] == "test" || input[2] == "normal");
+				if (input.getSize() == 4)
+					isValid = (input[3] == "shuffle");
+
+				if (!isValid)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: start-quiz <quiz-id> test|normal (shuffle)\n");
+
+				if (input[2] == "normal")
+				{
+					if (input.getSize() == 3)
+						System::getInstance().startQuiz(input[1], false, false);
+					else
+						System::getInstance().startQuiz(input[1], false, true);
+				}
 				else
-					System::getInstance().startQuiz(input[1], true, true);
+				{
+					if (input.getSize() == 3)
+						System::getInstance().startQuiz(input[1], true, false);
+					else
+						System::getInstance().startQuiz(input[1], true, true);
+				}
 			}
-		}
-		else if (input[0] == "report-quiz")
-		{
-			if (input.getSize() != 3)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: report-quiz <quiz-id> <reason>");
-
-			//reportQuiz();
-		}
-		else if (input[0] == "pending")
-		{
-			if (input.getSize() != 1)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: pending");
-
-			if (!System::getInstance().getLoggedUser() || System::getInstance().getLoggedUser()->getRole() == Role::Player)
-				throw std::logic_error("Can't access pending quizzes!");
-
-			for (size_t i = 0; i < System::getInstance().getPending().getSize(); i++)
+			else if (input[0] == "report-quiz")
 			{
-				std::cout << System::getInstance().getPending()[i];
+				if (input.getSize() != 3)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: report-quiz <quiz-id> <reason>\n");
+
+				//reportQuiz();
 			}
-		}
-		else if (input[0] == "approve-quiz")
-		{
-			if (input.getSize() != 2)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: approve-quiz <quiz-id>");
+			else if (input[0] == "pending")
+			{
+				if (input.getSize() != 1)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: pending\n");
 
-			System::getInstance().approveQuiz(input[1]);
-		}
-		else if (input[0] == "reject-quiz")
-		{
-			if (input.getSize() != 3)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: reject-quiz <quiz-id> <reason>");
+				if (!System::getInstance().getLoggedUser() || System::getInstance().getLoggedUser()->getRole() == Role::Player)
+					throw std::logic_error("Can't access pending quizzes!\n");
 
-			System::getInstance().rejectQuiz(input[1]);
-		}
-		else if (input[0] == "view-reports")
-		{
-			if (input.getSize() != 1)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: view-reports");
+				for (size_t i = 0; i < System::getInstance().getPending().getSize(); i++)
+				{
+					std::cout << System::getInstance().getPending()[i];
+				}
+			}
+			else if (input[0] == "approve-quiz")
+			{
+				if (input.getSize() != 2)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: approve-quiz <quiz-id>\n");
 
-			//viewReports();
-		}
-		else if (input[0] == "remove-quiz")
-		{
-			if (input.getSize() != 3)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: remove-quiz <quiz-id> <reason>");
+				System::getInstance().approveQuiz(input[1]);
+			}
+			else if (input[0] == "reject-quiz")
+			{
+				if (input.getSize() != 3)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: reject-quiz <quiz-id> <reason>\n");
 
-			System::getInstance().removeQuiz(input[1]);
-		}
-		else if (input[0] == "ban")
-		{
-			if (input.getSize() != 2)
-				throw std::invalid_argument("Error: Unknown command!\nUsage: ban <username>");
+				System::getInstance().rejectQuiz(input[1]);
+			}
+			else if (input[0] == "view-reports")
+			{
+				if (input.getSize() != 1)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: view-reports\n");
 
-			System::getInstance().banPlayer(input[1]);
+				//viewReports();
+			}
+			else if (input[0] == "remove-quiz")
+			{
+				if (input.getSize() != 3)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: remove-quiz <quiz-id> <reason>\n");
+
+				System::getInstance().removeQuiz(input[1]);
+			}
+			else if (input[0] == "ban")
+			{
+				if (input.getSize() != 2)
+					throw std::invalid_argument("Error: Unknown command!\nUsage: ban <username>\n");
+
+				System::getInstance().banPlayer(input[1]);
+			}
+
+			std::cout << std::endl;
+		}
+		catch (std::exception ex)
+		{
+			std::cout << ex.what() << std::endl;
 		}
 	}
 }
@@ -311,10 +320,7 @@ bool Console::answerTrueFalseQuestion()
 	if (givenA != "T" && givenA != "F")
 		throw std::invalid_argument("You should answer with 'T' or 'F'!");
 
-	if (givenA == "T")
-		return 1;
-	else
-		return 0;
+	return givenA == "T";
 }
 
 void Console::printSingleChoiceQuestion(const SingleChoiceQuestion& scQuestion)
@@ -336,7 +342,7 @@ unsigned Console::answerSingleChoiceQuestion(const SingleChoiceQuestion& scQuest
 	char maxChar = 'a' + scQuestion.getAnswers().getSize() - 1;
 	if (answer.getLen() > 1 || answer < 'a' || answer > maxChar)
 	{
-		String message = "the answer should be a letter between 'a' and " + (char)('a' + scQuestion.getAnswers().getSize());
+		String message = String("The answer should be a letter between 'a' and ") + "'" + maxChar + "'";
 		message += "!";
 		throw std::invalid_argument(message.c_str());
 	}
@@ -361,10 +367,7 @@ Vector<unsigned> Console::answerMultipleChoiceQuestion(const MultipleChoiceQuest
 	answers = readLine();
 	answers.makeLower();
 	Vector<String> answersVec = answers.split(' ');
-	for (size_t i = 0; i < answersVec.getSize(); i++)
-	{
-		std::cout << answersVec[i];
-	}
+	
 	if (answersVec.getSize() > mcQuestion.getAnswers().getSize()
 		|| answersVec.getSize() <= 1)
 	{
@@ -449,13 +452,13 @@ void Console::printRightAnswers(const Question* question)
 	std::cout << question->rightAnswerToString();
 }
 
-const String& Console::readQuizTitle()
+String Console::readQuizTitle()
 {
 	std::cout << "Quiz title: ";
 	return Console::readLine();
 }
 
-const size_t Console::readQuizNumberOfQuestions()
+size_t Console::readQuizNumberOfQuestions()
 {
 	std::cout << "Number of questions: ";
 	return Console::readLine().toUnsigned();

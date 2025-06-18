@@ -2,7 +2,7 @@
 #include "Console.h";
 #include <iostream>
 
-TrueOrFalseQuestion::TrueOrFalseQuestion(std::istream& is) : Question(is)
+TrueOrFalseQuestion::TrueOrFalseQuestion(std::istream& is) : Question(is, QuestionType::TrueOrFalse)
 {
 	this->deserialize(is);
 }
@@ -27,12 +27,12 @@ double TrueOrFalseQuestion::answer() const
 	return 0;
 }
 
-const String& TrueOrFalseQuestion::rightAnswerToString() const
+String TrueOrFalseQuestion::rightAnswerToString() const
 {
 	if (rightAnswer == true)
-		return "Right answer: True";
+		return "Right answer: True\n";
 	
-	return "Right answer: False";
+	return "Right answer: False\n";
 }
 
 void TrueOrFalseQuestion::serialize(std::ostream& os)
@@ -43,7 +43,6 @@ void TrueOrFalseQuestion::serialize(std::ostream& os)
 
 void TrueOrFalseQuestion::deserialize(std::istream& is)
 {
-	Question::deserialize(is);
 	bool rightAnswer;
 	is.read((char*)&rightAnswer, sizeof(rightAnswer));
 	this->rightAnswer = rightAnswer;

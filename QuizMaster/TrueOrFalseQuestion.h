@@ -13,7 +13,7 @@ public:
 	Question* clone() const override;
 
 	double answer() const override;
-	const String& rightAnswerToString() const override;
+	String rightAnswerToString() const override;
 
 	void serialize(std::ostream& os);
 	void deserialize(std::istream& is);

@@ -18,9 +18,10 @@ void Question::setPoints(double points)
     this->points = points;
 }
 
-Question::Question(std::istream& is)
+Question::Question(std::istream& is, QuestionType type)
 {
     this->deserialize(is);
+    this->questionType = type;
 }
 
 Question::Question(const String& question, double points, QuestionType questionType)
@@ -47,7 +48,8 @@ const QuestionType Question::getQuestionType() const
 
 void Question::serialize(std::ostream& os)
 {
-    os.write((const char*)&questionType, sizeof(questionType));
+    int typeInt = (int)questionType;
+    os.write((const char*)&typeInt, sizeof(typeInt));
     question.serialize(os);
     os.write((const char*)&points, sizeof(points));
 }
